@@ -1,6 +1,6 @@
 
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
-// SPR&#197;K
+// SPR\u00c5K
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
 let lang = 'sv';
 const T = {
@@ -8,23 +8,23 @@ const T = {
     logo:'Ruttkarta', go:'PLANERA RUTT', startPH:'Startplats...', endPH:'Destination...',
     routeLbl:'Rutt', gpsLbl:'GPS & Nearby', catLbl:'Kategorier',
     car:'Bil',foot:'Fot',bike:'Cykel',transit:'Buss',
-    gpsOn:'Aktivera GPS', gpsOff:'Stoppa GPS', gpsTracking:'F&#246;ljer dig...',
-    searchView:'S&#246;k i kartvy',
-    tabPOIs:'Sev&#228;rdheter', tabTrips:'Resor', tabJournal:'Dagbok',
-    sortDist:'Avst&#229;nd', sortRoute:'L&#228;ngs rutten', sortRating:'Betyg', sortName:'Namn A&#8211;&#214;',
-    saveTrip:'Spara', saveTitle:'Spara resa', namePH:'Namn p&#229; resan...',
+    gpsOn:'Aktivera GPS', gpsOff:'Stoppa GPS', gpsTracking:'F\u00f6ljer dig...',
+    searchView:'S\u00f6k i kartvy',
+    tabPOIs:'Sev\u00e4rdheter', tabTrips:'Resor', tabJournal:'Dagbok',
+    sortDist:'Avst\u00e5nd', sortRoute:'L\u00e4ngs rutten', sortRating:'Betyg', sortName:'Namn A&#8211;\u00d6',
+    saveTrip:'Spara', saveTitle:'Spara resa', namePH:'Namn p\u00e5 resan...',
     save:'Spara', cancel:'Avbryt',
-    fav:'&#11088; Favorit', unfav:'&#9734; Ta bort', markVis:'&#9989; Bes&#246;kt', unmarkVis:'&#9675; Ej bes&#246;kt',
+    fav:'&#11088; Favorit', unfav:'&#9734; Ta bort', markVis:'&#9989; Bes\u00f6kt', unmarkVis:'&#9675; Ej bes\u00f6kt',
     journal:'&#128211; Anteckning', focusMap:'&#128506; Visa', openMaps:'&#129517; Navigera', shareItem:'&#128279; Dela',
-    calcDetour:'Ber&#228;kna avstickare',
-    kmAway:'km bort', kmFromStart:'km in p&#229; rutten', detourLbl:'avstickare',
-    open:'&#214;ppet nu', closed:'St&#228;ngt', unknownHours:'Ok&#228;nd &#246;ppettid',
-    free:'Gratis', fee:'Intr&#228;de', unknownFee:'',
-    calculating:'Ber&#228;knar rutt...', fetchPOIs:'H&#228;mtar sev&#228;rdheter...',
+    calcDetour:'Ber\u00e4kna avstickare',
+    kmAway:'km bort', kmFromStart:'km in p\u00e5 rutten', detourLbl:'avstickare',
+    open:'\u00d6ppet nu', closed:'St\u00e4ngt', unknownHours:'Ok\u00e4nd \u00f6ppettid',
+    free:'Gratis', fee:'Intr\u00e4de', unknownFee:'',
+    calculating:'Ber\u00e4knar rutt...', fetchPOIs:'H\u00e4mtar sev\u00e4rdheter...',
     ready:'Redo', routeDone:'Rutt klar',
-    geocodeErr:'Platsen hittades inte.', routeErr:'Kunde inte ber&#228;kna rutt.',
-    gpsLocating:'H&#228;mtar position...', gpsDone:'Position hittad',gpsErr:'GPS-fel',
-    noPOIs:'Inga sev&#228;rdheter hittades.', noTrips:'Inga sparade resor.', noJournal:'Inga anteckningar.',
+    geocodeErr:'Platsen hittades inte.', routeErr:'Kunde inte ber\u00e4kna rutt.',
+    gpsLocating:'H\u00e4mtar position...', gpsDone:'Position hittad',gpsErr:'GPS-fel',
+    noPOIs:'Inga sev\u00e4rdheter hittades.', noTrips:'Inga sparade resor.', noJournal:'Inga anteckningar.',
     journalTitle:'Anteckning', journalPH:'Skriv dina minnen...',
     shareTitle:'Dela', shareCopy:'Kopiera',
     saved:'Sparad!', deleted:'Borttagen', copied:'Kopierad!',
@@ -138,7 +138,7 @@ const CATS = {
   viewpoint: {icon:'&#128301;',lbl:{sv:'Utsikt',   en:'Viewpoint'},   tag:['tourism','viewpoint'],       bg:'rgba(91,141,184,.15)'},
   gallery:   {icon:'&#128444;',lbl:{sv:'Galleri',  en:'Gallery'},     tag:['tourism','gallery'],         bg:'rgba(91,141,184,.15)'},
   zoo:       {icon:'&#129409;',lbl:{sv:'Djurpark', en:'Zoo'},         tag:['tourism','zoo'],             bg:'rgba(91,141,184,.15)'},
-  theme_park:{icon:'&#127905;',lbl:{sv:'N&#246;jespark',en:'Theme Park'},  tag:['tourism','theme_park'],      bg:'rgba(91,141,184,.15)'},
+  theme_park:{icon:'&#127905;',lbl:{sv:'N\u00f6jespark',en:'Theme Park'},  tag:['tourism','theme_park'],      bg:'rgba(91,141,184,.15)'},
   aquarium:  {icon:'&#128031;',lbl:{sv:'Akvarium', en:'Aquarium'},    tag:['tourism','aquarium'],        bg:'rgba(91,141,184,.15)'},
   castle:    {icon:'&#127984;',lbl:{sv:'Slott',    en:'Castle'},      tag:['historic','castle'],         bg:'rgba(212,145,58,.15)'},
   monument:  {icon:'&#128511;',lbl:{sv:'Monument', en:'Monument'},    tag:['historic','monument'],       bg:'rgba(212,145,58,.15)'},
@@ -182,7 +182,7 @@ function toggleCat(k, el){
 }
 
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
-// AVST&#197;NDFILTER
+// AVST\u00c5NDFILTER
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
 const DIST_OPTIONS = [0.5, 1, 2, 5, 10, 20]; // km
 let activeDistKm = 5; // standard
@@ -200,7 +200,7 @@ function buildDistFilter(){
 function setDistFilter(km, el){
   activeDistKm = km;
   document.querySelectorAll('.dist-chip').forEach(b => b.classList.toggle('on', parseFloat(b.textContent) === km));
-  // Om GPS aktiv &#8212; s&#246;k om
+  // Om GPS aktiv &#8212; s\u00f6k om
   if(gpsWatchId !== null && userPos) fetchPOIsNearby(userPos.lat, userPos.lon);
 }
 
@@ -228,17 +228,17 @@ let routeLayer=null, mStart=null, mEnd=null;
 let allPOIs=[], currentRouteData=null;
 let currentMode='car';
 
-// Auto-s&#246;k vid panorering (ej i ruttl&#228;ge eller GPS-l&#228;ge)
-// Flagga f&#246;rhindrar loop: s&#246;kning &#8594; mark&#246;rer &#8594; karta r&#246;r sig &#8594; s&#246;kning igen
+// Auto-s\u00f6k vid panorering (ej i ruttl\u00e4ge eller GPS-l\u00e4ge)
+// Flagga f\u00f6rhindrar loop: s\u00f6kning &#8594; mark\u00f6rer &#8594; karta r\u00f6r sig &#8594; s\u00f6kning igen
 let mapMoveTimer = null;
 let isFetchingFromMove = false;
 
 let lastMoveFetch = 0;
 map.on('moveend', () => {
-  if(currentRouteData) return;    // Ruttl&#228;ge
-  if(gpsWatchId !== null) return; // GPS-l&#228;ge
-  if(isFetchingFromMove) return;  // P&#229;g&#229;ende s&#246;kning
-  if(map.getZoom() < 12) return;  // F&#246;r utzoomed
+  if(currentRouteData) return;    // Ruttl\u00e4ge
+  if(gpsWatchId !== null) return; // GPS-l\u00e4ge
+  if(isFetchingFromMove) return;  // P\u00e5g\u00e5ende s\u00f6kning
+  if(map.getZoom() < 12) return;  // F\u00f6r utzoomed
   if(Date.now() - lastMoveFetch < 10000) return; // Max var 10:e sek
 
   clearTimeout(mapMoveTimer);
@@ -291,7 +291,7 @@ function startGPS(){
     const {latitude:lat, longitude:lon, accuracy} = pos.coords;
     userPos = {lat, lon};
 
-    // Uppdatera / skapa GPS-mark&#246;r
+    // Uppdatera / skapa GPS-mark\u00f6r
     if(gpsMarker) map.removeLayer(gpsMarker);
     if(gpsAccCircle) map.removeLayer(gpsAccCircle);
     gpsAccCircle = L.circle([lat,lon], {radius:Math.min(accuracy||50,200), color:'#5b8db8', fillOpacity:.06, weight:1}).addTo(map);
@@ -300,11 +300,11 @@ function startGPS(){
       zIndexOffset:1000
     }).addTo(map);
 
-    // Centrera kartan f&#246;rsta g&#229;ngen
+    // Centrera kartan f\u00f6rsta g\u00e5ngen
     if(!map._initialGPSCenter){ map.setView([lat,lon],14); map._initialGPSCenter=true; }
 
     setSB(t('gpsTracking'));
-    // S&#246;k sev&#228;rdheter runt nuvarande position (inte tyst &#8212; visa laddning)
+    // S\u00f6k sev\u00e4rdheter runt nuvarande position (inte tyst &#8212; visa laddning)
     if(!isFetchingFromMove) fetchPOIsNearby(lat, lon, false);
 
   }, err => { stopGPS(); setSB(t('gpsErr')); }, {enableHighAccuracy:true, maximumAge:5000});
@@ -385,7 +385,7 @@ function selSugg(w, suggId, lat, lon, name){
 function hideSugg(id){ setTimeout(()=>{ const el=document.getElementById(id); if(el) el.style.display='none'; },200); }
 
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
-// F&#196;RDS&#196;TT
+// F\u00c4RDS\u00c4TT
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
 function setMode(m){
   currentMode=m;
@@ -430,7 +430,7 @@ async function planRoute(){
 
     currentRouteData={startName:sv,endName:ev,sCoords:{...sCoords},eCoords:{...eCoords},mode:currentMode,distKm,mins,coords};
 
-    setProgress(40, lang==='sv'?'Rutt klar, h&#228;mtar sev&#228;rdheter...':'Route done, fetching sights...');
+    setProgress(40, lang==='sv'?'Rutt klar, h\u00e4mtar sev\u00e4rdheter...':'Route done, fetching sights...');
     setSB(t('fetchPOIs'));
     await fetchPOIsAlongRoute(coords, route.distance);
     const n = allPOIs.length;
@@ -458,7 +458,7 @@ async function fetchWikiImage(name){
     imgCache[name] = img;
     return img;
   }catch(e){
-    // F&#246;rs&#246;k med Wikimedia Commons s&#246;kning som backup
+    // F\u00f6rs\u00f6k med Wikimedia Commons s\u00f6kning som backup
     try{
       const url2 = 'https://commons.wikimedia.org/w/api.php?action=query&list=search&srsearch='+encodeURIComponent(name)+'&srnamespace=6&srlimit=1&format=json&origin=*';
       const r2 = await fetch(url2);
@@ -477,18 +477,18 @@ async function fetchWikiImage(name){
 }
 
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
-// &#214;PPETTIDER & PRISER (OSM-taggar)
+// \u00d6PPETTIDER & PRISER (OSM-taggar)
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
 function parseOpeningHours(oh){
   if(!oh) return null;
-  // Enkel koll om &#246;ppet just nu (Mo-Su 09:00-18:00 etc)
+  // Enkel koll om \u00f6ppet just nu (Mo-Su 09:00-18:00 etc)
   try{
     const now = new Date();
     const day = ['Su','Mo','Tu','We','Th','Fr','Sa'][now.getDay()];
     const hm = now.getHours()*100 + now.getMinutes();
     // Hantera "24/7"
     if(oh === '24/7') return {open:true, text:'24/7'};
-    // S&#246;k efter dagens dag i str&#228;ngen
+    // S\u00f6k efter dagens dag i str\u00e4ngen
     const m = oh.match(new RegExp(day+'[^;]*(\\d{2}:\\d{2})-(\\d{2}:\\d{2})'));
     if(m){
       const open  = parseInt(m[1].replace(':',''));
@@ -508,7 +508,7 @@ function parseFee(tags){
 }
 
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
-// OVERPASS &#8212; h&#228;mta POIs
+// OVERPASS &#8212; h\u00e4mta POIs
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
 function densConfig(){
   return {max:150, radius:Math.round(activeDistKm*1000)};
@@ -540,7 +540,7 @@ function buildQuery(cats, radius, pointList, max){
 
 async function fetchPOIsNearby(lat, lon, silent){
   if(!silent) setLoad(true, t('fetchPOIs'));
-  // Rensa bara om detta INTE &#228;r en tyst bakgrundss&#246;kning &#8212; undviker flimmer
+  // Rensa bara om detta INTE \u00e4r en tyst bakgrundss\u00f6kning &#8212; undviker flimmer
   clusterGroup.clearLayers();
   allPOIs = [];
   const {max,radius} = densConfig();
@@ -553,8 +553,8 @@ async function fetchPOIsNearby(lat, lon, silent){
     sortAndRender();
     updatePoiCount();
     if(allPOIs.length > 0) openPOIPanel();
-    setSB(allPOIs.length+' '+(lang==='sv'?'sev&#228;rdheter hittade':'sights found'));
-  }catch(e){ console.error(e); setSB(lang==='sv'?'Fel vid h&#228;mtning':'Fetch error'); }
+    setSB(allPOIs.length+' '+(lang==='sv'?'sev\u00e4rdheter hittade':'sights found'));
+  }catch(e){ console.error(e); setSB(lang==='sv'?'Fel vid h\u00e4mtning':'Fetch error'); }
   if(!silent) setLoad(false);
 }
 
@@ -564,7 +564,7 @@ async function fetchPOIsAlongRoute(coords, routeDistM){
   const routeKm = routeDistM/1000;
   const radius = Math.min(15000, Math.max(3000, activeDistKm*1000));
 
-  // Max 20 samplade punkter f&#246;r att h&#229;lla fr&#229;gan liten
+  // Max 20 samplade punkter f\u00f6r att h\u00e5lla fr\u00e5gan liten
   const numSamples = Math.min(20, Math.max(4, Math.ceil(routeKm/50)));
   const step = Math.max(1, Math.floor(coords.length/numSamples));
   const samples = [];
@@ -572,17 +572,17 @@ async function fetchPOIsAlongRoute(coords, routeDistM){
   if(samples[samples.length-1]!==coords[coords.length-1]) samples.push(coords[coords.length-1]);
   const pts = samples.map(c=>c[0]+','+c[1]).join(',');
 
-  // Max 100 resultat f&#246;r att h&#229;lla fr&#229;gan hanterbar
+  // Max 100 resultat f\u00f6r att h\u00e5lla fr\u00e5gan hanterbar
   const query = buildQuery([...activeCats], radius, pts, 100);
 
   try{
-    setProgress(60, lang==='sv'?'S&#246;ker sev&#228;rdheter l&#228;ngs rutten...':'Searching sights along route...');
+    setProgress(60, lang==='sv'?'S\u00f6ker sev\u00e4rdheter l\u00e4ngs rutten...':'Searching sights along route...');
     const resp = await fetch('https://overpass-api.de/api/interpreter', {
       method:'POST', body:query, headers:{'Content-Type':'text/plain'}
     });
     if(!resp.ok){
       console.error('Overpass error:', resp.status, await resp.text());
-      setSB('Overpass fel - f&#246;rs&#246;k igen');
+      setSB('Overpass fel - f\u00f6rs\u00f6k igen');
       setProgress(100);
       return;
     }
@@ -592,7 +592,7 @@ async function fetchPOIsAlongRoute(coords, routeDistM){
     sortAndRender();
     updatePoiCount();
     setProgress(100);
-  }catch(e){ console.error('fetchPOIsAlongRoute:', e); setSB('Fel vid h&#228;mtning'); setProgress(100); }
+  }catch(e){ console.error('fetchPOIsAlongRoute:', e); setSB('Fel vid h\u00e4mtning'); setProgress(100); }
 }
 
 async function processResults(elements, coords, threshold, nearPos){
@@ -651,10 +651,10 @@ async function processResults(elements, coords, threshold, nearPos){
 
   allPOIs = toProcess;
 
-  // L&#228;gg till mark&#246;rer direkt
+  // L\u00e4gg till mark\u00f6rer direkt
   allPOIs.forEach(p => addPOIMarker(p));
 
-  // H&#228;mta bilder i bakgrunden (f&#246;r de 20 n&#228;rmaste)
+  // H\u00e4mta bilder i bakgrunden (f\u00f6r de 20 n\u00e4rmaste)
   const first20 = [...allPOIs].slice(0,20);
   first20.forEach(p => {
     fetchWikiImage(p.wikiname).then(url => {
@@ -676,7 +676,7 @@ function addPOIMarker(p){
     .bindPopup(()=>makePopupHTML(p), {maxWidth:280});
   clusterGroup.addLayer(m);
   p._marker = m;
-  // Uppdatera popup med bild n&#228;r den &#246;ppnas
+  // Uppdatera popup med bild n\u00e4r den \u00f6ppnas
   m.on('popupopen', () => {
     if(p.imgUrl) updatePopupImg(p);
     else fetchWikiImage(p.wikiname).then(url=>{ p.imgUrl=url; if(url) updatePopupImg(p); });
@@ -721,7 +721,7 @@ function updatePopupImg(p){
 }
 
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
-// AVST&#197;ND &#8212; uppdateras l&#246;pande med GPS
+// AVST\u00c5ND &#8212; uppdateras l\u00f6pande med GPS
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
 function updateDistances(){
   if(!userPos) return;
@@ -731,7 +731,7 @@ function updateDistances(){
 }
 
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
-// &#214;PPNA I MAPS
+// \u00d6PPNA I MAPS
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
 function openInMaps(lat, lon, name){
   const q = encodeURIComponent(name+' '+lat+','+lon);
@@ -776,7 +776,7 @@ function sortAndRender(){
   else if(sort==='route')  pois.sort((a,b)=>parseFloat(a.routeKm)-parseFloat(b.routeKm));
   else if(sort==='rating') pois.sort((a,b)=>(b.rating||0)-(a.rating||0));
   else if(sort==='name')   pois.sort((a,b)=>a.name.localeCompare(b.name));
-  // Favoriter alltid &#246;verst
+  // Favoriter alltid \u00f6verst
   pois.sort((a,b)=>{ const sa=getPOIState(a.id),sb=getPOIState(b.id); return (sa.fav?0:1)-(sb.fav?0:1); });
 
   const html = renderPOICards(pois);
@@ -784,7 +784,7 @@ function sortAndRender(){
     const el=document.getElementById(id); if(el) el.innerHTML=html||emptyState(t('noPOIs'));
   });
 
-  // Uppdatera mark&#246;rer
+  // Uppdatera mark\u00f6rer
   clusterGroup.clearLayers();
   pois.forEach(p=>{ if(p._marker) clusterGroup.addLayer(p._marker); });
 }
@@ -847,7 +847,7 @@ function emptyState(msg){
 
 function updatePoiCount(){
   const n = allPOIs.length;
-  const txt = n+' '+(lang==='sv'?'sev&#228;rdheter':'sights');
+  const txt = n+' '+(lang==='sv'?'sev\u00e4rdheter':'sights');
   ['poi-count','mob-poi-count'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=txt; });
   ['rb-pois'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=n; });
 }
@@ -1017,7 +1017,7 @@ function handleImport(e){
 }
 
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
-// URL PARAMETER &#8212; L&#228;s in delad resa eller POI
+// URL PARAMETER &#8212; L\u00e4s in delad resa eller POI
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
 function checkUrlParams(){
   const params=new URLSearchParams(location.search);
