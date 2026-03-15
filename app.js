@@ -336,13 +336,16 @@ let geoTimers={}, sCoords=null, eCoords=null;
 
 async function geocode(q){
   if(!q || q.trim().length < 3) return [];
-  const r = await fetch('https://photon.komoot.io/api/?q='+encodeURIComponent(q.trim())+'&limit=5&lang='+(lang==='sv'?'sv':'en'));
-  if(!r.ok) return [];
-  const d = await r.json();
-  return (d.features||[]).map(f=>({
-    lat:f.geometry.coordinates[1], lon:f.geometry.coordinates[0],
-    display_name:[f.properties.name,f.properties.city,f.properties.country].filter(Boolean).join(', ')
-  }));
+  const url = 'https://photon.komoot.io/api/?q=' + encodeURIComponent(q.trim()) + '&limit=5';
+  try {
+    const r = await fetch(url);
+    if(!r.ok) return [];
+    const d = await r.json();
+    return (d.features||[]).map(f=>({
+      lat:f.geometry.coordinates[1], lon:f.geometry.coordinates[0],
+      display_name:[f.properties.name,f.properties.city,f.properties.country].filter(Boolean).join(', ')
+    }));
+  } catch(e) { return []; }
 }
 
 function onInput(w, isMob){
