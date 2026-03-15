@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="sv" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Ruttkarta</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=DM+Mono:wght@300;400;500&family=Crimson+Pro:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+<link rel="stylesheet" href="app.css">
+
+</head>
+<body>
+
+<!-- &#9472;&#9472; KARTA &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472; -->
+<div id="map"></div>
+
+<!-- &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
+     MOBIL UI
+&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552; -->
+<div id="mobile-ui">
+  <!-- Toppbar -->
+  <div id="mob-topbar">
+    <div class="mob-row1">
+      <div class="mob-logo"><div class="mob-logo-ring">&#10022;</div><span id="mob-logo">Ruttkarta</span></div>
+      <div style="margin-left:auto;display:flex;gap:5px">
+        <button class="mob-fab" style="flex:none;width:36px;height:36px;border-radius:6px" onclick="toggleTheme()" id="mob-theme-btn" title="Tema">&#127769;</button>
+        <button class="mob-fab" style="flex:none;padding:4px 9px;border-radius:6px;font-size:10px" onclick="setLang(lang==='sv'?'en':'sv')" id="mob-lang-btn">EN</button>
+      </div>
+    </div>
+    <div class="mob-row2">
+      <div class="mob-inp-wrap">
+        <div class="mob-dot s"></div>
+        <input class="mob-input" id="mob-si" placeholder="Startplats..." autocomplete="off" oninput="onInput('s',true)" onblur="hideSugg('mob-ss')">
+        <div class="suggestions" id="mob-ss" style="display:none"></div>
+      </div>
+      <div class="mob-inp-wrap">
+        <div class="mob-dot e"></div>
+        <input class="mob-input" id="mob-ei" placeholder="Destination..." autocomplete="off" oninput="onInput('e',true)" onblur="hideSugg('mob-es')">
+        <div class="suggestions" id="mob-es" style="display:none"></div>
+      </div>
+    </div>
+    <div class="mob-row3">
+      <button class="mob-go" id="mob-go-btn" onclick="planRoute()"><span id="mob-go-txt">K&#214;R</span></button>
+      <button class="mob-fab" id="mob-gps-btn" onclick="toggleGPS()" title="GPS">&#128225;</button>
+      <button class="mob-fab" id="mob-filter-btn" onclick="toggleMobFilter()" title="Filter">&#9881;</button>
+      <button class="mob-fab" id="mob-panel-btn" onclick="toggleBottomSheet()" title="Lista">&#128205;</button>
+    </div>
+    <!-- Mobilfilter (expanderbart) -->
+    <div id="mob-filter-expand" style="display:none;padding-top:8px;border-top:1px solid var(--border);margin-top:8px">
+      <div class="section-lbl">F&#228;rds&#228;tt</div>
+      <div class="mode-row" style="margin-bottom:8px">
+        <button class="mode-b on" data-mode="car" onclick="setMode('car')">&#128663;<span class="ml" id="mob-ml-car">Bil</span></button>
+        <button class="mode-b" data-mode="foot" onclick="setMode('foot')">&#128694;<span class="ml" id="mob-ml-foot">Fot</span></button>
+        <button class="mode-b" data-mode="bike" onclick="setMode('bike')">&#128690;<span class="ml" id="mob-ml-bike">Cykel</span></button>
+        <button class="mode-b" data-mode="transit" onclick="setMode('transit')">&#128652;<span class="ml" id="mob-ml-transit">Buss</span></button>
+      </div>
+      <div class="section-lbl">Avst&#229;nd (GPS)</div>
+      <div class="dist-filter" id="mob-dist-filter"></div>
+      <div class="section-lbl" style="margin-top:8px">Kategorier</div>
+      <div class="filter-grid" id="mob-cat-filters"></div>
+    </div>
+  </div>
+
+  <!-- GPS FAB -->
+  <button id="gps-fab" onclick="toggleGPS()" title="GPS">&#128225;</button>
+
+  <!-- Bottom Sheet -->
+  <div id="bottom-sheet" class="hidden">
+    <div class="bs-handle" onclick="toggleBottomSheet()"></div>
+    <div class="tab-row">
+      <button class="tab-btn on" id="mob-tab-pois" onclick="switchTab('pois')"><span id="mob-tl-pois">Sev&#228;rdheter</span></button>
+      <button class="tab-btn" id="mob-tab-trips" onclick="switchTab('trips')"><span id="mob-tl-trips">Resor</span></button>
+      <button class="tab-btn" id="mob-tab-journal" onclick="switchTab('journal')"><span id="mob-tl-journal">Dagbok</span></button>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;padding:6px 10px;border-bottom:1px solid var(--border);flex-shrink:0">
+      <span class="poi-count" id="mob-poi-count">0 sev&#228;rdheter</span>
+      <select class="sort-select" id="mob-sort-select" onchange="sortAndRender()" style="margin-left:auto">
+        <option value="dist">Avst&#229;nd</option>
+        <option value="route">L&#228;ngs rutten</option>
+        <option value="rating">Betyg</option>
+        <option value="name">Namn</option>
+      </select>
+    </div>
+    <div class="poi-list" id="mob-tab-content-pois"></div>
+    <div class="poi-list" id="mob-tab-content-trips" style="display:none"></div>
+    <div class="poi-list" id="mob-tab-content-journal" style="display:none"></div>
+  </div>
+</div>
+
+<!-- &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
+     DESKTOP UI
+&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552; -->
+<div id="desktop-ui" style="display:none">
+  <div id="left-panel">
+    <button id="panel-toggle-btn" onclick="toggleDesktopPanel()">&#9664;</button>
+
+    <!-- Header -->
+    <div class="panel-header">
+      <div class="panel-logo"><div class="panel-logo-ring">&#10022;</div><span id="desk-logo">Ruttkarta</span></div>
+      <div class="panel-actions">
+        <button class="icon-btn" onclick="toggleTheme()" id="desk-theme-btn" title="Tema">&#127769;</button>
+        <button class="icon-btn" onclick="setLang(lang==='sv'?'en':'sv')" id="desk-lang-btn" style="font-size:10px;font-family:'DM Mono',monospace">EN</button>
+      </div>
+    </div>
+
+    <!-- S&#246;kning -->
+    <div class="search-section">
+      <div class="section-lbl" id="desk-route-lbl">Rutt</div>
+      <div class="inp-row">
+        <div class="inp-dot s"></div>
+        <input class="route-input" id="si" placeholder="Startplats..." autocomplete="off" oninput="onInput('s',false)" onblur="hideSugg('ss')">
+        <div class="suggestions" id="ss" style="display:none"></div>
+      </div>
+      <div class="inp-row">
+        <div class="inp-dot e"></div>
+        <input class="route-input" id="ei" placeholder="Destination..." autocomplete="off" oninput="onInput('e',false)" onblur="hideSugg('es')">
+        <div class="suggestions" id="es" style="display:none"></div>
+      </div>
+      <div class="mode-row">
+        <button class="mode-b on" data-mode="car" onclick="setMode('car')">&#128663;<span class="ml" id="ml-car">Bil</span></button>
+        <button class="mode-b" data-mode="foot" onclick="setMode('foot')">&#128694;<span class="ml" id="ml-foot">Fot</span></button>
+        <button class="mode-b" data-mode="bike" onclick="setMode('bike')">&#128690;<span class="ml" id="ml-bike">Cykel</span></button>
+        <button class="mode-b" data-mode="transit" onclick="setMode('transit')">&#128652;<span class="ml" id="ml-transit">Buss</span></button>
+      </div>
+      <button class="go-btn" id="go-btn" onclick="planRoute()"><span id="go-txt">PLANERA RUTT</span></button>
+    </div>
+
+    <!-- GPS sektion -->
+    <div class="gps-section">
+      <div class="section-lbl" id="desk-gps-lbl">GPS & Nearby</div>
+      <div class="gps-row">
+        <button class="gps-btn" id="desk-gps-btn" onclick="toggleGPS()">&#128225; <span id="gps-btn-txt">Aktivera GPS</span></button>
+        <button class="icon-btn" onclick="searchInView()" title="S&#246;k i kartvy">&#128269;</button>
+      </div>
+      <div class="dist-filter" id="dist-filter"></div>
+    </div>
+
+    <!-- Kategorier -->
+    <div class="filter-section">
+      <div class="section-lbl" id="desk-cat-lbl">Kategorier</div>
+      <div class="filter-grid" id="cat-filters"></div>
+    </div>
+
+    <!-- POI lista -->
+    <div class="poi-area">
+      <div class="tab-row">
+        <button class="tab-btn on" id="tab-pois" onclick="switchTab('pois')"><span id="tl-pois">Sev&#228;rdheter</span></button>
+        <button class="tab-btn" id="tab-trips" onclick="switchTab('trips')"><span id="tl-trips">Resor</span></button>
+        <button class="tab-btn" id="tab-journal" onclick="switchTab('journal')"><span id="tl-journal">Dagbok</span></button>
+      </div>
+      <div class="poi-toolbar">
+        <span class="poi-count" id="poi-count">0 sev&#228;rdheter</span>
+        <select class="sort-select" id="sort-select" onchange="sortAndRender()">
+          <option value="dist">Avst&#229;nd</option>
+          <option value="route">L&#228;ngs rutten</option>
+          <option value="rating">Betyg</option>
+          <option value="name">Namn A&#8211;&#214;</option>
+        </select>
+      </div>
+      <div class="poi-list" id="tab-content-pois"></div>
+      <div class="poi-list" id="tab-content-trips" style="display:none"></div>
+      <div class="poi-list" id="tab-content-journal" style="display:none"></div>
+    </div>
+  </div>
+</div>
+
+<!-- &#9472;&#9472; RUTTINFOBAR &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472; -->
+<div id="routebar">
+  <div class="rb-chip"><span class="rb-val" id="rb-dist">&#8212;</span><span class="rb-lbl">km</span></div>
+  <div class="rb-div"></div>
+  <div class="rb-chip"><span class="rb-val" id="rb-time">&#8212;</span><span class="rb-lbl" id="rb-time-lbl">Tid</span></div>
+  <div class="rb-div"></div>
+  <div class="rb-chip"><span class="rb-val" id="rb-pois">0</span><span class="rb-lbl" id="rb-pois-lbl">Sev.</span></div>
+  <div class="rb-div"></div>
+  <button class="rb-save" onclick="openSaveModal()">&#128190; <span id="rb-save-txt">Spara</span></button>
+</div>
+
+<!-- &#9472;&#9472; STATUSBAR &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472; -->
+<div id="statusbar">
+  <div class="sb-dot"></div>
+  <span class="sb-txt" id="sb-txt">Redo</span>
+  <span class="sb-src">OSM &#183; OSRM &#183; Overpass &#183; Photon &#183; Wikimedia</span>
+</div>
+
+<!-- &#9472;&#9472; LOADING &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472; -->
+<div id="loading">
+  <div class="spinner"></div>
+  <div class="load-txt" id="load-txt">Laddar...</div>
+</div>
+
+<!-- &#9472;&#9472; MODALER &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472; -->
+<div class="modal-bg" id="modal-save">
+  <div class="modal">
+    <h3 id="ms-title">Spara resa</h3>
+    <input type="text" id="ms-name" placeholder="Namn...">
+    <div class="modal-row">
+      <button class="cancel" onclick="closeModal('modal-save')" id="ms-cancel">Avbryt</button>
+      <button class="ok" onclick="confirmSave()" id="ms-ok">Spara</button>
+    </div>
+  </div>
+</div>
+<div class="modal-bg" id="modal-journal">
+  <div class="modal">
+    <h3 id="mj-title">Anteckning</h3>
+    <div id="mj-poi-name" style="font-family:'Crimson Pro',serif;font-size:13px;color:var(--text-d);margin-bottom:8px"></div>
+    <textarea id="mj-note" rows="4" placeholder="Skriv dina minnen..."></textarea>
+    <div class="modal-row">
+      <button class="cancel" onclick="closeModal('modal-journal')" id="mj-cancel">Avbryt</button>
+      <button class="ok" onclick="confirmJournal()" id="mj-ok">Spara</button>
+    </div>
+  </div>
+</div>
+<div class="modal-bg" id="modal-share">
+  <div class="modal">
+    <h3 id="msh-title">Dela</h3>
+    <input type="text" id="msh-url" readonly onclick="this.select()" style="cursor:pointer;font-size:10px">
+    <div class="modal-row">
+      <button class="cancel" onclick="closeModal('modal-share')" id="msh-close">St&#228;ng</button>
+      <button class="ok" onclick="copyShareUrl()" id="msh-copy">Kopiera</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="import-file" accept=".json" style="display:none" onchange="handleImport(event)">
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+
+</body>
+</html>
