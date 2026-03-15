@@ -562,38 +562,65 @@ async function fetchPOIsAlongRoute(coords, routeDistM){
   clusterGroup.clearLayers();
   allPOIs = [];
   const routeKm = routeDistM/1000;
-  const radius = Math.min(15000, Math.max(3000, activeDistKm*1000));
+  const radius = Math.min(10000, Math.max(3000, activeDistKm*1000));
 
-  // Max 20 samplade punkter f\u00f6r att h\u00e5lla fr\u00e5gan liten
-  const numSamples = Math.min(20, Math.max(4, Math.ceil(routeKm/50)));
+  // Sample points every ~50km, max 20 total
+  const numSamples = Math.min(20, Math.max(3, Math.ceil(routeKm/50)));
   const step = Math.max(1, Math.floor(coords.length/numSamples));
   const samples = [];
   for(let i=0;i<coords.length;i+=step) samples.push(coords[i]);
   if(samples[samples.length-1]!==coords[coords.length-1]) samples.push(coords[coords.length-1]);
-  const pts = samples.map(c=>c[0]+','+c[1]).join(',');
 
-  // Max 100 resultat f\u00f6r att h\u00e5lla fr\u00e5gan hanterbar
-  const query = buildQuery([...activeCats], radius, pts, 100);
+  // Split into chunks of max 4 points each to avoid timeout
+  const chunkSize = 4;
+  const chunks = [];
+  for(let i=0;i<samples.length;i+=chunkSize){
+    chunks.push(samples.slice(i, i+chunkSize));
+  }
 
-  try{
-    setProgress(60, lang==='sv'?'S\u00f6ker sev\u00e4rdheter l\u00e4ngs rutten...':'Searching sights along route...');
-    const resp = await fetch('https://overpass-api.de/api/interpreter', {
-      method:'POST', body:query, headers:{'Content-Type':'text/plain'}
-    });
-    if(!resp.ok){
-      console.error('Overpass error:', resp.status, await resp.text());
-      setSB('Overpass fel - f\u00f6rs\u00f6k igen');
-      setProgress(100);
-      return;
-    }
-    setProgress(80, lang==='sv'?'Bearbetar resultat...':'Processing results...');
-    const data = await resp.json();
-    await processResults(data.elements||[], coords, radius/111000, null);
-    sortAndRender();
-    updatePoiCount();
-    setProgress(100);
-  }catch(e){ console.error('fetchPOIsAlongRoute:', e); setSB('Fel vid h\u00e4mtning'); setProgress(100); }
+  console.log('Route:', routeKm.toFixed(0)+'km,', numSamples, 'samples,', chunks.length, 'chunks, radius:', radius);
+  setProgress(50, 'S\u00f6ker sev\u00e4rdheter... (0/' + chunks.length + ')');
+
+  const seen = new Set();
+  for(let ci=0; ci<chunks.length; ci++){
+    const chunk = chunks[ci];
+    const pts = chunk.map(c=>c[0]+','+c[1]).join(',');
+    const query = buildQuery([...activeCats], radius, pts, 50);
+    setProgress(50 + Math.round((ci/chunks.length)*45), 'Del ' + (ci+1) + '/' + chunks.length + '...');
+    try{
+      const resp = await fetch('https://overpass-api.de/api/interpreter',{
+        method:'POST', body:query, headers:{'Content-Type':'text/plain'}
+      });
+      if(!resp.ok){ console.warn('Chunk',ci,'failed:',resp.status); continue; }
+      const data = await resp.json();
+      if(data.remark) console.warn('Overpass remark chunk',ci,':',data.remark);
+      const els = data.elements||[];
+      console.log('Chunk', ci, ':', els.length, 'elements');
+      // Add unique elements
+      els.forEach(el=>{
+        const lat=el.lat||(el.center&&el.center.lat);
+        const lon=el.lon||(el.center&&el.center.lon);
+        if(!lat||!lon) return;
+        const name=(el.tags||{}).name||(el.tags||{})['name:sv']||(el.tags||{})['name:en'];
+        if(!name) return;
+        const key=name+'|'+lat.toFixed(4);
+        if(!seen.has(key)){ seen.add(key); el._chunkIdx=ci; }
+        else return;
+        // Store for processing
+        el._keep=true;
+      });
+      // Process this chunk's results immediately
+      await processResults(els.filter(e=>e._keep), coords, radius/111000, null);
+      sortAndRender();
+      updatePoiCount();
+    }catch(e){ console.error('Chunk',ci,'error:',e); }
+    // Small delay between chunks to avoid rate limiting
+    if(ci < chunks.length-1) await new Promise(r=>setTimeout(r,300));
+  }
+  setProgress(100);
+  console.log('Total POIs:', allPOIs.length);
 }
+
 
 async function processResults(elements, coords, threshold, nearPos){
   const seen = new Set();
