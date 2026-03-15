@@ -530,7 +530,9 @@ async function fetchPOIsNearby(lat, lon, silent){
   const {max,radius} = densConfig();
   const query = buildQuery([...activeCats], radius, lat+','+lon, max);
   try{
-    const data = await (await fetch('https://overpass-api.de/api/interpreter',{method:'POST',body:query,headers:{'Content-Type':'text/plain'}})).json();
+    const resp = await fetch('https://overpass-api.de/api/interpreter',{method:'POST',body:query,headers:{'Content-Type':'text/plain'}});
+    if(!resp.ok){ console.error('Overpass nearby error:', resp.status); if(!silent) setLoad(false); return; }
+    const data = await resp.json();
     await processResults(data.elements||[], null, radius/111000, {lat,lon});
     sortAndRender();
     updatePoiCount();
@@ -544,20 +546,33 @@ async function fetchPOIsAlongRoute(coords, routeDistM){
   clusterGroup.clearLayers();
   allPOIs = [];
   const routeKm = routeDistM/1000;
-  const radius = Math.min(20000, Math.max(5000, activeDistKm*1000));
-  const numSamples = Math.min(40, Math.max(4, Math.ceil(routeKm/25)));
+  const radius = Math.min(15000, Math.max(3000, activeDistKm*1000));
+
+  // Max 20 samplade punkter f&#246;r att h&#229;lla fr&#229;gan liten
+  const numSamples = Math.min(20, Math.max(4, Math.ceil(routeKm/50)));
   const step = Math.max(1, Math.floor(coords.length/numSamples));
   const samples = [];
   for(let i=0;i<coords.length;i+=step) samples.push(coords[i]);
   if(samples[samples.length-1]!==coords[coords.length-1]) samples.push(coords[coords.length-1]);
   const pts = samples.map(c=>c[0]+','+c[1]).join(' ');
-  const query = buildQuery([...activeCats], radius, pts, 200);
+
+  // Max 100 resultat f&#246;r att h&#229;lla fr&#229;gan hanterbar
+  const query = buildQuery([...activeCats], radius, pts, 100);
+
   try{
-    const data = await (await fetch('https://overpass-api.de/api/interpreter',{method:'POST',body:query,headers:{'Content-Type':'text/plain'}})).json();
+    const resp = await fetch('https://overpass-api.de/api/interpreter', {
+      method:'POST', body:query, headers:{'Content-Type':'text/plain'}
+    });
+    if(!resp.ok){
+      console.error('Overpass error:', resp.status, await resp.text());
+      setSB('Overpass fel - f&#246;rs&#246;k igen');
+      return;
+    }
+    const data = await resp.json();
     await processResults(data.elements||[], coords, radius/111000, null);
     sortAndRender();
     updatePoiCount();
-  }catch(e){ console.error(e); }
+  }catch(e){ console.error('fetchPOIsAlongRoute:', e); setSB('Fel vid h&#228;mtning'); }
 }
 
 async function processResults(elements, coords, threshold, nearPos){
