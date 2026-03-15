@@ -428,6 +428,7 @@ async function planRoute(){
 
     currentRouteData={startName:sv,endName:ev,sCoords:{...sCoords},eCoords:{...eCoords},mode:currentMode,distKm,mins,coords};
 
+    setProgress(40, lang==='sv'?'Rutt klar, h&#228;mtar sev&#228;rdheter...':'Route done, fetching sights...');
     setSB(t('fetchPOIs'));
     await fetchPOIsAlongRoute(coords, route.distance);
     const n = allPOIs.length;
@@ -512,13 +513,26 @@ function densConfig(){
 }
 
 function buildQuery(cats, radius, pointList, max){
-  const lines = ['[out:json][timeout:60];','('];
+  // Group categories by tag key to reduce query size dramatically
+  // e.g. all "tourism" values become: node["tourism"~"museum|attraction|..."](around:...)
+  const groups = {};
   cats.forEach(k=>{
     if(!CATS[k]) return;
     const [tk,tv] = CATS[k].tag;
-    lines.push('node["'+tk+'"="'+tv+'"](around:'+radius+','+pointList+');');
+    if(!groups[tk]) groups[tk] = [];
+    groups[tk].push(tv);
   });
-  lines.push(');','out tags '+max+';');
+
+  const lines = ['[out:json][timeout:60];','('];
+  for(const [tagKey, tagVals] of Object.entries(groups)){
+    const valStr = tagVals.join('|');
+    const filter = tagVals.length > 1
+      ? '["'+tagKey+'"~"'+valStr+'"]'
+      : '["'+tagKey+'"="'+tagVals[0]+'"]';
+    lines.push('node'+filter+'(around:'+radius+','+pointList+');');
+    lines.push('way'+filter+'(around:'+radius+','+pointList+');');
+  }
+  lines.push(');','out center tags '+max+';');
   return lines.join('\n');
 }
 
@@ -560,19 +574,23 @@ async function fetchPOIsAlongRoute(coords, routeDistM){
   const query = buildQuery([...activeCats], radius, pts, 100);
 
   try{
+    setProgress(60, lang==='sv'?'S&#246;ker sev&#228;rdheter l&#228;ngs rutten...':'Searching sights along route...');
     const resp = await fetch('https://overpass-api.de/api/interpreter', {
       method:'POST', body:query, headers:{'Content-Type':'text/plain'}
     });
     if(!resp.ok){
       console.error('Overpass error:', resp.status, await resp.text());
       setSB('Overpass fel - f&#246;rs&#246;k igen');
+      setProgress(100);
       return;
     }
+    setProgress(80, lang==='sv'?'Bearbetar resultat...':'Processing results...');
     const data = await resp.json();
     await processResults(data.elements||[], coords, radius/111000, null);
     sortAndRender();
     updatePoiCount();
-  }catch(e){ console.error('fetchPOIsAlongRoute:', e); setSB('Fel vid h&#228;mtning'); }
+    setProgress(100);
+  }catch(e){ console.error('fetchPOIsAlongRoute:', e); setSB('Fel vid h&#228;mtning'); setProgress(100); }
 }
 
 async function processResults(elements, coords, threshold, nearPos){
@@ -1082,8 +1100,27 @@ function setLoad(show,txt){
   document.getElementById('loading').classList.toggle('show',show);
   if(txt) document.getElementById('load-txt').textContent=txt;
   ['go-btn','mob-go-btn'].forEach(id=>{ const b=document.getElementById(id); if(b) b.disabled=show; });
+  if(show && txt) setProgress(20, txt);
+  if(!show) setProgress(100);
 }
 function setSB(msg){ document.getElementById('sb-txt').textContent=msg; }
+
+// Progress bar & status toast
+function setProgress(pct, msg){
+  const bar = document.getElementById('progress-bar');
+  const toast = document.getElementById('status-toast');
+  const txt = document.getElementById('st-txt');
+  if(bar) bar.style.width = pct + '%';
+  if(msg && txt) txt.textContent = msg;
+  if(toast){
+    if(pct > 0 && pct < 100) toast.classList.add('show');
+    else toast.classList.remove('show');
+  }
+  // Auto-hide at 100%
+  if(pct >= 100){
+    setTimeout(()=>{ if(bar) bar.style.width='0%'; if(toast) toast.classList.remove('show'); }, 800);
+  }
+}
 function closeModal(id){ document.getElementById(id).classList.remove('show'); }
 ['modal-save','modal-journal','modal-share'].forEach(id=>{
   document.getElementById(id).addEventListener('click',e=>{ if(e.target.id===id) closeModal(id); });
