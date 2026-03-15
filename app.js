@@ -117,7 +117,7 @@ function updateSortOptions(){
 let theme = localStorage.getItem('rk_theme') || 'dark';
 function applyTheme(){
   document.documentElement.setAttribute('data-theme', theme);
-  const icon = theme === 'dark' ? '&#127769;' : '&#9728;';
+  const icon = theme === 'dark' ? '&#127769;' : '&#9728;&#65039;';
   ['desk-theme-btn','mob-theme-btn'].forEach(id => {
     const el = document.getElementById(id);
     if(el) el.textContent = icon;
@@ -212,6 +212,14 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution:'&#169; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>', maxZoom:19
 }).addTo(map);
 map.zoomControl.setPosition('bottomright');
+
+// Fix Leaflet default marker icon paths (broken in some hosting setups)
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
+  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+});
 
 const clusterGroup = L.markerClusterGroup({maxClusterRadius:50, showCoverageOnHover:false});
 map.addLayer(clusterGroup);
@@ -327,7 +335,9 @@ function searchInView(){
 let geoTimers={}, sCoords=null, eCoords=null;
 
 async function geocode(q){
-  const r = await fetch('https://photon.komoot.io/api/?q='+encodeURIComponent(q)+'&limit=5&lang='+(lang==='sv'?'sv':'en'));
+  if(!q || q.trim().length < 3) return [];
+  const r = await fetch('https://photon.komoot.io/api/?q='+encodeURIComponent(q.trim())+'&limit=5&lang='+(lang==='sv'?'sv':'en'));
+  if(!r.ok) return [];
   const d = await r.json();
   return (d.features||[]).map(f=>({
     lat:f.geometry.coordinates[1], lon:f.geometry.coordinates[0],
@@ -344,7 +354,7 @@ function onInput(w, isMob){
   clearTimeout(geoTimers[w]);
   geoTimers[w] = setTimeout(async()=>{
     const val = document.getElementById(srcId).value.trim();
-    if(val.length < 2){ document.getElementById(suggId).style.display='none'; return; }
+    if(val.length < 3){ document.getElementById(suggId).style.display='none'; return; }
     try{ const res = await geocode(val); showSugg(suggId,res,w); }catch(e){}
   }, 350);
 }
