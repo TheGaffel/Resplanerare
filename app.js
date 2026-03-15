@@ -614,8 +614,8 @@ async function fetchPOIsAlongRoute(coords, routeDistM){
       sortAndRender();
       updatePoiCount();
     }catch(e){ console.error('Chunk',ci,'error:',e); }
-    // Small delay between chunks to avoid rate limiting
-    if(ci < chunks.length-1) await new Promise(r=>setTimeout(r,300));
+    // Delay between chunks to avoid Overpass rate limiting (429)
+    if(ci < chunks.length-1) await new Promise(r=>setTimeout(r,1500));
   }
   setProgress(100);
   console.log('Total POIs:', allPOIs.length);
