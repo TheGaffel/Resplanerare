@@ -233,21 +233,23 @@ let currentMode='car';
 let mapMoveTimer = null;
 let isFetchingFromMove = false;
 
+let lastMoveFetch = 0;
 map.on('moveend', () => {
-  if(currentRouteData) return;   // Ruttl&#228;ge &#8212; hoppa &#246;ver
-  if(gpsWatchId !== null) return; // GPS hanterar sin egen s&#246;kning
-  if(isFetchingFromMove) return;  // Redan i en s&#246;kning &#8212; hoppa &#246;ver
-  if(map.getZoom() < 12) return;  // F&#246;r utzoomed &#8212; hoppa &#246;ver
+  if(currentRouteData) return;    // Ruttl&#228;ge
+  if(gpsWatchId !== null) return; // GPS-l&#228;ge
+  if(isFetchingFromMove) return;  // P&#229;g&#229;ende s&#246;kning
+  if(map.getZoom() < 12) return;  // F&#246;r utzoomed
+  if(Date.now() - lastMoveFetch < 10000) return; // Max var 10:e sek
 
   clearTimeout(mapMoveTimer);
   mapMoveTimer = setTimeout(() => {
     isFetchingFromMove = true;
+    lastMoveFetch = Date.now();
     const c = map.getCenter();
     fetchPOIsNearby(c.lat, c.lng, true).finally(() => {
-      // V&#228;nta lite extra innan vi till&#229;ter n&#228;sta s&#246;kning
-      setTimeout(() => { isFetchingFromMove = false; }, 2000);
+      setTimeout(() => { isFetchingFromMove = false; }, 5000);
     });
-  }, 1200);
+  }, 2000);
 });
 
 function makeEndIcon(color){
