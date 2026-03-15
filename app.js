@@ -554,7 +554,7 @@ async function fetchPOIsAlongRoute(coords, routeDistM){
   const samples = [];
   for(let i=0;i<coords.length;i+=step) samples.push(coords[i]);
   if(samples[samples.length-1]!==coords[coords.length-1]) samples.push(coords[coords.length-1]);
-  const pts = samples.map(c=>c[0]+','+c[1]).join(' ');
+  const pts = samples.map(c=>c[0]+','+c[1]).join(',');
 
   // Max 100 resultat f&#246;r att h&#229;lla fr&#229;gan hanterbar
   const query = buildQuery([...activeCats], radius, pts, 100);
