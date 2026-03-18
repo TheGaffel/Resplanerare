@@ -588,35 +588,41 @@ async function fetchPOIsAlongRoute(coords, routeDistM){
     const pts = chunk.map(c=>c[0]+','+c[1]).join(',');
     const query = buildQuery([...activeCats], radius, pts, 50);
     setProgress(50 + Math.round((ci/chunks.length)*45), 'Del ' + (ci+1) + '/' + chunks.length + '...');
-    try{
-      const resp = await fetch('https://overpass-api.de/api/interpreter',{
-        method:'POST', body:query, headers:{'Content-Type':'text/plain'}
-      });
-      if(!resp.ok){ console.warn('Chunk',ci,'failed:',resp.status); continue; }
-      const data = await resp.json();
-      if(data.remark) console.warn('Overpass remark chunk',ci,':',data.remark);
-      const els = data.elements||[];
-      console.log('Chunk', ci, ':', els.length, 'elements');
-      // Add unique elements
-      els.forEach(el=>{
-        const lat=el.lat||(el.center&&el.center.lat);
-        const lon=el.lon||(el.center&&el.center.lon);
-        if(!lat||!lon) return;
-        const name=(el.tags||{}).name||(el.tags||{})['name:sv']||(el.tags||{})['name:en'];
-        if(!name) return;
-        const key=name+'|'+lat.toFixed(4);
-        if(!seen.has(key)){ seen.add(key); el._chunkIdx=ci; }
-        else return;
-        // Store for processing
-        el._keep=true;
-      });
-      // Process this chunk's results immediately
-      await processResults(els.filter(e=>e._keep), coords, radius/111000, null);
-      sortAndRender();
-      updatePoiCount();
-    }catch(e){ console.error('Chunk',ci,'error:',e); }
-    // Delay between chunks to avoid Overpass rate limiting (429)
-    if(ci < chunks.length-1) await new Promise(r=>setTimeout(r,1500));
+    // Retry loop &#8212; wacht bij 429
+    let retries = 3;
+    while(retries > 0){
+      try{
+        const resp = await fetch('https://overpass-api.de/api/interpreter',{
+          method:'POST', body:query, headers:{'Content-Type':'text/plain'}
+        });
+        if(resp.status === 429){
+          retries--;
+          console.warn('Chunk',ci,'got 429, waiting 8s, retries left:',retries);
+          await new Promise(r=>setTimeout(r,8000));
+          continue;
+        }
+        if(!resp.ok){ console.warn('Chunk',ci,'failed:',resp.status); break; }
+        const data = await resp.json();
+        if(data.remark) console.warn('Overpass remark chunk',ci,':',data.remark);
+        const els = data.elements||[];
+        console.log('Chunk', ci, ':', els.length, 'elements');
+        els.forEach(el=>{
+          const lat=el.lat||(el.center&&el.center.lat);
+          const lon=el.lon||(el.center&&el.center.lon);
+          if(!lat||!lon) return;
+          const name=(el.tags||{}).name||(el.tags||{})['name:sv']||(el.tags||{})['name:en'];
+          if(!name) return;
+          const key=name+'|'+lat.toFixed(4);
+          if(!seen.has(key)){ seen.add(key); el._keep=true; }
+        });
+        await processResults(els.filter(e=>e._keep), coords, radius/111000, null);
+        sortAndRender();
+        updatePoiCount();
+        break; // Success
+      }catch(e){ console.error('Chunk',ci,'error:',e); break; }
+    }
+    // 5 seconds between chunks
+    if(ci < chunks.length-1) await new Promise(r=>setTimeout(r,5000));
   }
   setProgress(100);
   console.log('Total POIs:', allPOIs.length);
