@@ -676,7 +676,10 @@ async function processResults(elements, coords, threshold, nearPos){
     });
   });
 
-  allPOIs = toProcess;
+  // Append to allPOIs (don't overwrite &#8212; supports chunked loading)
+  const globalSeen = new Set(allPOIs.map(p=>p.id));
+  const newPOIs = toProcess.filter(p=>!globalSeen.has(p.id));
+  allPOIs.push(...newPOIs);
 
   // L\u00e4gg till mark\u00f6rer direkt
   allPOIs.forEach(p => addPOIMarker(p));
