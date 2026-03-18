@@ -32,16 +32,20 @@ html,body { height:100%; overflow:hidden; font-family:'DM Mono',monospace; backg
   #mobile-ui { display:none !important; }
   #desktop-ui { display:flex !important; }
 
-  /* V&#228;nsterpanel */
+  /* V&#228;nsterpanel &#8212; scrollbar som en l&#229;ng kolumn */
   #left-panel {
     position:fixed; top:0; left:0; bottom:28px; z-index:600;
-    width:380px; display:flex; flex-direction:column;
+    width:380px;
     background:var(--glass); backdrop-filter:blur(12px);
     border-right:1px solid var(--border);
     box-shadow:var(--shadow);
     transition:transform .3s;
-    overflow:hidden;
+    overflow-y:auto;
+    overflow-x:hidden;
+    display:flex; flex-direction:column;
   }
+  #left-panel::-webkit-scrollbar { width:4px; }
+  #left-panel::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
   #left-panel.collapsed { transform:translateX(-340px); }
   #left-panel.collapsed #panel-toggle-btn { right:-44px; }
 
@@ -178,16 +182,14 @@ html,body { height:100%; overflow:hidden; font-family:'DM Mono',monospace; backg
 .fchk.on { border-color:var(--amber-d); color:var(--amber); background:var(--amber-bg); }
 
 /* POI list area */
-.poi-area { flex:1; overflow:hidden; display:flex; flex-direction:column; min-height:0; }
+.poi-area { display:flex; flex-direction:column; min-height:400px; }
 .poi-toolbar { display:flex; align-items:center; gap:8px; padding:8px 12px; border-bottom:1px solid var(--border); flex-shrink:0; }
 .poi-count { font-size:10px; color:var(--text-m); }
 .sort-select { background:var(--panel2); border:1px solid var(--border); border-radius:5px; color:var(--text-d); font-family:'DM Mono',monospace; font-size:9px; padding:4px 6px; outline:none; cursor:pointer; margin-left:auto; }
 .tab-row { display:flex; border-bottom:1px solid var(--border); flex-shrink:0; }
 .tab-btn { flex:1; padding:8px 4px; font-family:'DM Mono',monospace; font-size:9px; background:transparent; border:none; color:var(--text-m); cursor:pointer; border-bottom:2px solid transparent; transition:all .15s; letter-spacing:.04em; }
 .tab-btn.on { color:var(--amber); border-bottom-color:var(--amber); }
-.poi-list { flex:1; overflow-y:auto; padding:8px; padding-bottom:32px; }
-.poi-list::-webkit-scrollbar { width:3px; }
-.poi-list::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+.poi-list { padding:8px; padding-bottom:32px; } /* Panel scrolls, not list */
 
 /* &#9472;&#9472; POI KORT &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472; */
 .pc { background:var(--panel2); border:1px solid var(--border); border-radius:10px; margin-bottom:7px; overflow:hidden; cursor:pointer; transition:all .2s; animation:fadeUp .2s ease; }

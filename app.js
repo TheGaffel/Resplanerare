@@ -432,6 +432,7 @@ async function planRoute(){
 
     setProgress(40, lang==='sv'?'Rutt klar, h\u00e4mtar sev\u00e4rdheter...':'Route done, fetching sights...');
     setSB(t('fetchPOIs'));
+    clusterGroup.clearLayers(); allPOIs = []; // Clear before chunked loading
     await fetchPOIsAlongRoute(coords, route.distance);
     const n = allPOIs.length;
     document.getElementById('rb-pois').textContent = n;
@@ -559,8 +560,8 @@ async function fetchPOIsNearby(lat, lon, silent){
 }
 
 async function fetchPOIsAlongRoute(coords, routeDistM){
-  clusterGroup.clearLayers();
-  allPOIs = [];
+  // Note: clusterGroup and allPOIs are cleared by planRoute() before calling this
+  // Do NOT clear here &#8212; chunks add progressively
   const routeKm = routeDistM/1000;
   const radius = Math.min(10000, Math.max(3000, activeDistKm*1000));
 
