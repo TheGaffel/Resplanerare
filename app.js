@@ -553,6 +553,7 @@ function buildQuery(cats, radius, pointList, max){
 
 // Map our categories to Geoapify category strings
 function buildGeoapifyCategories(cats){
+  // Exact category names from Geoapify docs
   const map = {
     museum:     'entertainment.museum',
     attraction: 'tourism.sights',
@@ -564,9 +565,9 @@ function buildGeoapifyCategories(cats){
     castle:     'tourism.sights',
     monument:   'tourism.sights',
     ruins:      'tourism.sights',
-    church:     'religion.place_of_worship',
+    church:     'religion',
     peak:       'natural',
-    beach:      'beach',
+    beach:      'natural.beach',
     waterfall:  'natural',
     nature:     'natural',
     camping:    'accommodation.camping',
@@ -579,8 +580,8 @@ function buildGeoapifyCategories(cats){
   const result = new Set();
   cats.forEach(k=>{ if(map[k]) result.add(map[k]); });
   if(result.size === 0) result.add('tourism.sights');
-  // Max 5 categories to keep URL short
-  return [...result].slice(0,5).join(',');
+  // Geoapify supports many categories in one request &#8212; join with comma
+  return [...result].join(',');
 }
 
 // Map Geoapify category back to our cat key
@@ -620,14 +621,13 @@ async function fetchPOIsNearby(lat, lon, silent){
   const geoCats = buildGeoapifyCategories([...activeCats]);
 
   try{
-    const url = 'https://api.geoapify.com/v2/places?apiKey=' + GKEY;
-    const body = JSON.stringify({
-      categories: geoCats.split(','),
-      filters: { circle: { lon, lat, radiusMeters: radiusM } },
-      limit: 50, lang: 'en'
-    });
-    const resp = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body });
-    if(!resp.ok){ console.error('Geoapify nearby error:', resp.status, await resp.text()); if(!silent) setLoad(false); return; }
+    const url = 'https://api.geoapify.com/v2/places' +
+      '?categories=' + geoCats +
+      '&filter=circle:' + lon + ',' + lat + ',' + radiusM +
+      '&limit=50' +
+      '&apiKey=' + GKEY;
+    const resp = await fetch(url);
+    if(!resp.ok){ console.error('Geoapify nearby error:', resp.status); if(!silent) setLoad(false); return; }
     const data = await resp.json();
     const features = data.features || [];
     console.log('Geoapify nearby:', features.length, 'results');
@@ -696,18 +696,13 @@ async function fetchPOIsAlongRoute(coords, routeDistM){
     const [lat,lon] = samples[si];
     setProgress(30 + Math.round((si/samples.length)*65), 'S&#246;ker... ('+(si+1)+'/'+samples.length+')');
     try{
-      const url = 'https://api.geoapify.com/v2/places?apiKey=' + GKEY;
-      const body = JSON.stringify({
-        categories: geoCats.split(','),
-        filters: { circle: { lon, lat, radiusMeters: radiusM } },
-        limit: 30,
-        lang: 'en'
-      });
-      const resp = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body
-      });
+      // GET with correct format: filter=circle:lon,lat,radius
+      const url = 'https://api.geoapify.com/v2/places' +
+        '?categories=' + geoCats +
+        '&filter=circle:' + lon + ',' + lat + ',' + radiusM +
+        '&limit=30' +
+        '&apiKey=' + GKEY;
+      const resp = await fetch(url);
       if(!resp.ok){ console.warn('Geoapify point',si,'error:',resp.status); continue; }
       const data = await resp.json();
       const features = data.features || [];
