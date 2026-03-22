@@ -731,7 +731,7 @@ async function fetchPOIsAlongRoute(coords, routeDistM){
           : null;
         const cat = geoapifyCat(p.categories||[]);
 
-        allPOIs.push({
+        const poi = {
           id:key, lat:flat, lon:flon, name, cat, tags:{},
           routeKm: routeKmPos.toFixed(1),
           distFromUser,
@@ -741,7 +741,9 @@ async function fetchPOIsAlongRoute(coords, routeDistM){
           website: p.website || null,
           wikipedia: null, wikiname: name,
           detourMins:null, detourKm:null, imgUrl:null
-        });
+        };
+        allPOIs.push(poi);
+        addPOIMarker(poi);
       });
 
       sortAndRender();
