@@ -407,7 +407,14 @@ async function planRoute(){
     if(!eCoords){ const r=await geocode(ev); if(!r.length){alert(t('geocodeErr'));setLoad(false);return;} eCoords={lat:r[0].lat,lon:r[0].lon}; }
 
     const prof = osrmProf(currentMode);
-    const url = 'https://router.project-osrm.org/route/v1/'+prof+'/'+sCoords.lon+','+sCoords.lat+';'+eCoords.lon+','+eCoords.lat+'?overview=full&geometries=geojson';
+    const resolvedWPs = await resolveWaypoints();
+    updateWPMarkers(resolvedWPs);
+    const wpoints = [
+      sCoords.lon+','+sCoords.lat,
+      ...resolvedWPs.map(w=>w.coords.lon+','+w.coords.lat),
+      eCoords.lon+','+eCoords.lat
+    ];
+    const url = 'https://router.project-osrm.org/route/v1/'+prof+'/'+wpoints.join(';')+'?overview=full&geometries=geojson';
     const rd = await (await fetch(url)).json();
     if(!rd.routes||!rd.routes.length){alert(t('routeErr'));setLoad(false);return;}
 
@@ -539,93 +546,223 @@ function buildQuery(cats, radius, pointList, max){
   return lines.join('\n');
 }
 
+
+// &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
+// GEOAPIFY HELPERS
+// &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
+
+// Map our categories to Geoapify category strings
+function buildGeoapifyCategories(cats){
+  const map = {
+    museum:     'entertainment.museum',
+    attraction: 'tourism.attraction',
+    viewpoint:  'tourism.sights',
+    gallery:    'entertainment.culture',
+    zoo:        'entertainment.zoo',
+    theme_park: 'entertainment.theme_park',
+    aquarium:   'entertainment.aquarium',
+    castle:     'tourism.sights.castle',
+    monument:   'tourism.sights.monument',
+    ruins:      'tourism.sights.ruins',
+    church:     'religion',
+    peak:       'natural.peak',
+    beach:      'natural.beach',
+    waterfall:  'natural.waterfall',
+    nature:     'natural',
+    camping:    'accommodation.camping',
+    restaurant: 'catering.restaurant',
+    cafe:       'catering.cafe',
+    pub:        'catering.pub',
+    fuel:       'service.vehicle.fuel',
+    charging:   'service.vehicle.charging_station',
+  };
+  const result = new Set();
+  cats.forEach(k=>{ if(map[k]) result.add(map[k]); });
+  return [...result].join(',') || 'tourism';
+}
+
+// Map Geoapify category back to our cat key
+function geoapifyCat(categories){
+  const cat = (categories[0]||'').toLowerCase();
+  if(cat.includes('museum')) return 'museum';
+  if(cat.includes('castle')) return 'castle';
+  if(cat.includes('monument')) return 'monument';
+  if(cat.includes('ruins')) return 'ruins';
+  if(cat.includes('religion')) return 'church';
+  if(cat.includes('zoo')) return 'zoo';
+  if(cat.includes('aquarium')) return 'aquarium';
+  if(cat.includes('theme_park')) return 'theme_park';
+  if(cat.includes('beach')) return 'beach';
+  if(cat.includes('peak')) return 'peak';
+  if(cat.includes('waterfall')) return 'waterfall';
+  if(cat.includes('natural')) return 'nature';
+  if(cat.includes('camping')) return 'camping';
+  if(cat.includes('restaurant')) return 'restaurant';
+  if(cat.includes('cafe')) return 'cafe';
+  if(cat.includes('pub')) return 'pub';
+  if(cat.includes('fuel')) return 'fuel';
+  if(cat.includes('charging')) return 'charging';
+  if(cat.includes('catering')) return 'restaurant';
+  if(cat.includes('gallery')||cat.includes('culture')) return 'gallery';
+  return 'attraction';
+}
+
 async function fetchPOIsNearby(lat, lon, silent){
   if(!silent) setLoad(true, t('fetchPOIs'));
-  // Rensa bara om detta INTE \u00e4r en tyst bakgrundss\u00f6kning &#8212; undviker flimmer
   clusterGroup.clearLayers();
   allPOIs = [];
-  const {max,radius} = densConfig();
-  const query = buildQuery([...activeCats], radius, lat+','+lon, max);
+  const radiusM = Math.min(10000, Math.max(500, activeDistKm*1000));
+  const GKEY = '5decbd1af5e544089f2e74a99b66d534';
+
+  // Build category filter from active cats
+  const geoCats = buildGeoapifyCategories([...activeCats]);
+
   try{
-    const resp = await fetch('https://overpass-api.de/api/interpreter',{method:'POST',body:query,headers:{'Content-Type':'text/plain'}});
-    if(!resp.ok){ console.error('Overpass nearby error:', resp.status); if(!silent) setLoad(false); return; }
+    const url = 'https://api.geoapify.com/v2/places' +
+      '?categories=' + geoCats +
+      '&filter=circle:' + lon + ',' + lat + ',' + radiusM +
+      '&limit=50' +
+      '&lang=' + (lang==='sv'?'sv':'en') +
+      '&apiKey=' + GKEY;
+    const resp = await fetch(url);
+    if(!resp.ok){ console.error('Geoapify nearby error:', resp.status); if(!silent) setLoad(false); return; }
     const data = await resp.json();
-    await processResults(data.elements||[], null, radius/111000, {lat,lon});
+    const features = data.features || [];
+    console.log('Geoapify nearby:', features.length, 'results');
+
+    features.forEach(f=>{
+      const p = f.properties;
+      const [flon,flat] = f.geometry.coordinates;
+      const name = p.name || p.address_line1;
+      if(!name) return;
+      const key = 'geo|' + (p.place_id || (name+'|'+flat.toFixed(4)));
+      const distFromUser = Math.round(Math.hypot(flat-lat,flon-lon)*111*10)/10;
+      const cat = geoapifyCat(p.categories||[]);
+      allPOIs.push({
+        id:key, lat:flat, lon:flon, name,
+        cat, tags:{},
+        routeKm:'0',
+        distFromUser,
+        rating: p.datasource?.raw?.stars ? parseFloat(p.datasource.raw.stars) : null,
+        hours: p.opening_hours ? parseOpeningHours(p.opening_hours) : null,
+        fee: null,
+        website: p.website || null,
+        wikipedia: null, wikiname: name,
+        detourMins:null, detourKm:null, imgUrl:null
+      });
+    });
+
+    allPOIs.forEach(p=>addPOIMarker(p));
     sortAndRender();
     updatePoiCount();
-    if(allPOIs.length > 0) openPOIPanel();
-    setSB(allPOIs.length+' '+(lang==='sv'?'sev\u00e4rdheter hittade':'sights found'));
-  }catch(e){ console.error(e); setSB(lang==='sv'?'Fel vid h\u00e4mtning':'Fetch error'); }
+    if(allPOIs.length>0) openPOIPanel();
+    setSB(allPOIs.length+' '+(lang==='sv'?'sev&#228;rdheter hittade':'sights found'));
+
+    // Fetch wiki images in background
+    allPOIs.slice(0,15).forEach(p=>{
+      fetchWikiImage(p.wikiname).then(url=>{
+        p.imgUrl=url;
+        const img=document.getElementById('pc-img-'+p.id.replace(/[|.]/g,'-'));
+        if(img&&url){img.src=url;img.style.display='block';}
+        const ph=document.getElementById('pc-ph-'+p.id.replace(/[|.]/g,'-'));
+        if(ph&&url) ph.style.display='none';
+      });
+    });
+
+  }catch(e){ console.error('Geoapify nearby:', e); }
   if(!silent) setLoad(false);
 }
 
-async function fetchPOIsAlongRoute(coords, routeDistM){
-  // Note: clusterGroup and allPOIs are cleared by planRoute() before calling this
-  // Do NOT clear here &#8212; chunks add progressively
-  const routeKm = routeDistM/1000;
-  const radius = Math.min(10000, Math.max(3000, activeDistKm*1000));
 
-  // Sample points every ~50km, max 20 total
-  const numSamples = Math.min(20, Math.max(3, Math.ceil(routeKm/50)));
+async function fetchPOIsAlongRoute(coords, routeDistM){
+  const routeKm = routeDistM/1000;
+  const radiusM = Math.min(10000, Math.max(2000, activeDistKm*1000));
+  const GKEY = '5decbd1af5e544089f2e74a99b66d534';
+  const geoCats = buildGeoapifyCategories([...activeCats]);
+
+  // Sample every ~60km, max 15 points
+  const numSamples = Math.min(15, Math.max(3, Math.ceil(routeKm/60)));
   const step = Math.max(1, Math.floor(coords.length/numSamples));
   const samples = [];
   for(let i=0;i<coords.length;i+=step) samples.push(coords[i]);
   if(samples[samples.length-1]!==coords[coords.length-1]) samples.push(coords[coords.length-1]);
 
-  // Split into chunks of max 4 points each to avoid timeout
-  const chunkSize = 4;
-  const chunks = [];
-  for(let i=0;i<samples.length;i+=chunkSize){
-    chunks.push(samples.slice(i, i+chunkSize));
-  }
-
-  console.log('Route:', routeKm.toFixed(0)+'km,', numSamples, 'samples,', chunks.length, 'chunks, radius:', radius);
-  setProgress(50, 'S\u00f6ker sev\u00e4rdheter... (0/' + chunks.length + ')');
-
+  console.log('Geoapify route:', routeKm.toFixed(0)+'km,', samples.length, 'points, radius:', radiusM+'m');
   const seen = new Set();
-  for(let ci=0; ci<chunks.length; ci++){
-    const chunk = chunks[ci];
-    const pts = chunk.map(c=>c[0]+','+c[1]).join(',');
-    const query = buildQuery([...activeCats], radius, pts, 50);
-    setProgress(50 + Math.round((ci/chunks.length)*45), 'Del ' + (ci+1) + '/' + chunks.length + '...');
-    // Retry loop &#8212; wacht bij 429
-    let retries = 3;
-    while(retries > 0){
-      try{
-        const resp = await fetch('https://overpass-api.de/api/interpreter',{
-          method:'POST', body:query, headers:{'Content-Type':'text/plain'}
-        });
-        if(resp.status === 429){
-          retries--;
-          console.warn('Chunk',ci,'got 429, waiting 8s, retries left:',retries);
-          await new Promise(r=>setTimeout(r,8000));
-          continue;
+
+  for(let si=0; si<samples.length; si++){
+    const [lat,lon] = samples[si];
+    setProgress(30 + Math.round((si/samples.length)*65), 'S&#246;ker... ('+(si+1)+'/'+samples.length+')');
+    try{
+      const url = 'https://api.geoapify.com/v2/places' +
+        '?categories=' + geoCats +
+        '&filter=circle:' + lon + ',' + lat + ',' + radiusM +
+        '&limit=30' +
+        '&lang=' + (lang==='sv'?'sv':'en') +
+        '&apiKey=' + GKEY;
+      const resp = await fetch(url);
+      if(!resp.ok){ console.warn('Geoapify point',si,'error:',resp.status); continue; }
+      const data = await resp.json();
+      const features = data.features || [];
+      console.log('Point',si,':', features.length, 'results');
+
+      features.forEach(f=>{
+        const p = f.properties;
+        const [flon,flat] = f.geometry.coordinates;
+        const name = p.name || p.address_line1;
+        if(!name) return;
+        const key = 'geo|' + (p.place_id || (name+'|'+flat.toFixed(4)));
+        if(seen.has(key)) return;
+        seen.add(key);
+        if(coords && ptLineDist([flat,flon],coords) > radiusM/111000*1.2) return;
+
+        let routeKmPos = 0;
+        let bi=0,bd=Infinity;
+        for(let i=0;i<coords.length;i++){
+          const d=Math.hypot(flat-coords[i][0],flon-coords[i][1]);
+          if(d<bd){bd=d;bi=i;}
         }
-        if(!resp.ok){ console.warn('Chunk',ci,'failed:',resp.status); break; }
-        const data = await resp.json();
-        if(data.remark) console.warn('Overpass remark chunk',ci,':',data.remark);
-        const els = data.elements||[];
-        console.log('Chunk', ci, ':', els.length, 'elements');
-        els.forEach(el=>{
-          const lat=el.lat||(el.center&&el.center.lat);
-          const lon=el.lon||(el.center&&el.center.lon);
-          if(!lat||!lon) return;
-          const name=(el.tags||{}).name||(el.tags||{})['name:sv']||(el.tags||{})['name:en'];
-          if(!name) return;
-          const key=name+'|'+lat.toFixed(4);
-          if(!seen.has(key)){ seen.add(key); el._keep=true; }
+        for(let i=1;i<=bi;i++) routeKmPos+=Math.hypot(coords[i][0]-coords[i-1][0],coords[i][1]-coords[i-1][1])*111;
+
+        const distFromUser = userPos
+          ? Math.round(Math.hypot(flat-userPos.lat,flon-userPos.lon)*111*10)/10
+          : null;
+        const cat = geoapifyCat(p.categories||[]);
+
+        allPOIs.push({
+          id:key, lat:flat, lon:flon, name, cat, tags:{},
+          routeKm: routeKmPos.toFixed(1),
+          distFromUser,
+          rating: p.datasource?.raw?.stars ? parseFloat(p.datasource.raw.stars) : null,
+          hours: p.opening_hours ? parseOpeningHours(p.opening_hours) : null,
+          fee: null,
+          website: p.website || null,
+          wikipedia: null, wikiname: name,
+          detourMins:null, detourKm:null, imgUrl:null
         });
-        await processResults(els.filter(e=>e._keep), coords, radius/111000, null);
-        sortAndRender();
-        updatePoiCount();
-        break; // Success
-      }catch(e){ console.error('Chunk',ci,'error:',e); break; }
-    }
-    // 5 seconds between chunks
-    if(ci < chunks.length-1) await new Promise(r=>setTimeout(r,5000));
+      });
+
+      sortAndRender();
+      updatePoiCount();
+    }catch(e){ console.error('Geoapify point',si,':',e); }
+
+    // 200ms between requests &#8212; Geoapify handles this fine
+    if(si < samples.length-1) await new Promise(r=>setTimeout(r,200));
   }
+
   setProgress(100);
   console.log('Total POIs:', allPOIs.length);
+
+  // Fetch images in background
+  allPOIs.slice(0,20).forEach(p=>{
+    fetchWikiImage(p.wikiname).then(url=>{
+      p.imgUrl=url;
+      const img=document.getElementById('pc-img-'+p.id.replace(/[|.]/g,'-'));
+      if(img&&url){img.src=url;img.style.display='block';}
+      const ph=document.getElementById('pc-ph-'+p.id.replace(/[|.]/g,'-'));
+      if(ph&&url) ph.style.display='none';
+    });
+  });
 }
 
 
@@ -1190,6 +1327,178 @@ function segDist(px,py,ax,ay,bx,by){
 }
 
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
+
+// &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
+// WAYPOINTS (delstopp)
+// &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
+let waypoints = [];
+let wpGeoTimers = {};
+let wpCounter = 0;
+
+function addWaypoint(){
+  const id = 'wp' + (++wpCounter);
+  waypoints.push({id, name:'', coords:null});
+  renderWaypoints();
+}
+
+function removeWaypoint(id){
+  waypoints = waypoints.filter(w=>w.id!==id);
+  renderWaypoints();
+}
+
+function moveWaypoint(id, dir){
+  const idx = waypoints.findIndex(w=>w.id===id);
+  const newIdx = idx + dir;
+  if(newIdx < 0 || newIdx >= waypoints.length) return;
+  [waypoints[idx], waypoints[newIdx]] = [waypoints[newIdx], waypoints[idx]];
+  renderWaypoints();
+}
+
+function renderWaypoints(){
+  ['wp-list','mob-wp-list'].forEach(listId=>{
+    const el = document.getElementById(listId);
+    if(!el) return;
+    const isMob = listId.startsWith('mob');
+    el.innerHTML = '';
+    waypoints.forEach((wp,i)=>{
+      const row = document.createElement('div');
+      row.className = 'wp-row';
+
+      // Input wrapper
+      const wrap = document.createElement('div');
+      wrap.className = 'wp-inp-wrap';
+      const dot = document.createElement('div');
+      dot.className = 'wp-dot-abs';
+      wrap.appendChild(dot);
+
+      const inp = document.createElement('input');
+      inp.className = isMob ? 'mob-input' : 'wp-input';
+      inp.style.paddingLeft = '24px';
+      inp.id = listId + 'I' + wp.id;
+      inp.placeholder = 'Via...';
+      inp.value = wp.name;
+      inp.autocomplete = 'off';
+      inp.dataset.wpid = wp.id;
+      inp.dataset.lid = listId;
+      inp.addEventListener('input', function(){ onWPInput(this); });
+      inp.addEventListener('blur', function(){
+        setTimeout(()=>{ const s=document.getElementById(listId+'S'+wp.id); if(s) s.style.display='none'; },200);
+      });
+      wrap.appendChild(inp);
+
+      const sugg = document.createElement('div');
+      sugg.className = 'suggestions wp-suggestions';
+      sugg.id = listId + 'S' + wp.id;
+      sugg.style.display = 'none';
+      wrap.appendChild(sugg);
+      row.appendChild(wrap);
+
+      // Up/down controls
+      const ctrl = document.createElement('div');
+      ctrl.className = 'wp-controls';
+      if(i>0){
+        const up = document.createElement('button');
+        up.className = 'wp-ctrl-btn';
+        up.innerHTML = '&#9650;';
+        up.addEventListener('click', ()=>moveWaypoint(wp.id,-1));
+        ctrl.appendChild(up);
+      } else {
+        ctrl.appendChild(Object.assign(document.createElement('div'),{style:'height:14px'}));
+      }
+      if(i<waypoints.length-1){
+        const dn = document.createElement('button');
+        dn.className = 'wp-ctrl-btn';
+        dn.innerHTML = '&#9660;';
+        dn.addEventListener('click', ()=>moveWaypoint(wp.id,1));
+        ctrl.appendChild(dn);
+      } else {
+        ctrl.appendChild(Object.assign(document.createElement('div'),{style:'height:14px'}));
+      }
+      row.appendChild(ctrl);
+
+      // Remove button
+      const rm = document.createElement('button');
+      rm.className = 'wp-remove';
+      rm.innerHTML = '&#215;';
+      rm.addEventListener('click', ()=>removeWaypoint(wp.id));
+      row.appendChild(rm);
+
+      el.appendChild(row);
+    });
+  });
+}
+
+
+function onWPInput(inp){
+  const wpId = inp.dataset.wpid;
+  const listId = inp.dataset.lid;
+  const val = inp.value;
+  const wp = waypoints.find(w=>w.id===wpId);
+  if(wp){ wp.name=val; wp.coords=null; }
+  // Sync desktop <-> mobile
+  const otherId = (listId==='wp-list'?'mob-wp-list':'wp-list') + 'I' + wpId;
+  const other = document.getElementById(otherId);
+  if(other && other !== inp) other.value = val;
+  // Geocode
+  clearTimeout(wpGeoTimers[wpId]);
+  if(val.trim().length < 3) return;
+  wpGeoTimers[wpId] = setTimeout(async()=>{
+    const sid = listId + 'S' + wpId;
+    const suggEl = document.getElementById(sid);
+    if(!suggEl) return;
+    try{
+      const results = await geocode(val);
+      if(!results.length){ suggEl.style.display='none'; return; }
+      // Build suggestions with DOM to avoid quoting issues
+      suggEl.innerHTML = '';
+      results.slice(0,5).forEach(r=>{
+        const div = document.createElement('div');
+        div.className = 'sugg-item';
+        div.textContent = r.display_name;
+        div.addEventListener('mousedown', ()=>{
+          const short = r.display_name.split(',').slice(0,2).join(',').trim();
+          if(wp){ wp.name=short; wp.coords={lat:r.lat,lon:r.lon}; }
+          // Update all inputs for this wp
+          ['wp-list','mob-wp-list'].forEach(lid=>{
+            const el = document.getElementById(lid+'I'+wpId);
+            if(el) el.value = short;
+            const s = document.getElementById(lid+'S'+wpId);
+            if(s) s.style.display='none';
+          });
+        });
+        suggEl.appendChild(div);
+      });
+      suggEl.style.display = 'block';
+    }catch(e){}
+  }, 350);
+}
+
+
+async function resolveWaypoints(){
+  for(const wp of waypoints){
+    if(!wp.coords && wp.name.trim().length>=3){
+      const r = await geocode(wp.name);
+      if(r.length) wp.coords={lat:r[0].lat,lon:r[0].lon};
+    }
+  }
+  return waypoints.filter(w=>w.coords);
+}
+
+let wpMarkers=[];
+function updateWPMarkers(resolvedWPs){
+  wpMarkers.forEach(m=>map.removeLayer(m));
+  wpMarkers=[];
+  resolvedWPs.forEach((wp,i)=>{
+    const m = L.marker([wp.coords.lat,wp.coords.lon],{
+      icon:L.divIcon({
+        html:'<div style="background:#d4913a;border:2px solid #0e0d0b;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:10px;font-weight:bold;color:#0e0d0b;box-shadow:0 2px 6px rgba(0,0,0,.5)">'+(i+1)+'</div>',
+        className:'',iconSize:[22,22],iconAnchor:[11,11]
+      })
+    }).addTo(map).bindPopup('<b>'+wp.name+'</b>');
+    wpMarkers.push(m);
+  });
+}
+
 // TANGENTBORD
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
 ['si','ei','mob-si','mob-ei'].forEach(id=>{

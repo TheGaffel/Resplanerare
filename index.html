@@ -46,11 +46,14 @@
         <input class="mob-input" id="mob-si" placeholder="Startplats..." autocomplete="off" oninput="onInput('s',true)" onblur="hideSugg('mob-ss')">
         <div class="suggestions" id="mob-ss" style="display:none"></div>
       </div>
+      <!-- Mobile waypoints -->
+      <div id="mob-wp-list"></div>
       <div class="mob-inp-wrap">
         <div class="mob-dot e"></div>
         <input class="mob-input" id="mob-ei" placeholder="Destination..." autocomplete="off" oninput="onInput('e',true)" onblur="hideSugg('mob-es')">
         <div class="suggestions" id="mob-es" style="display:none"></div>
       </div>
+      <button class="add-wp-btn" onclick="addWaypoint()">+ L&#228;gg till stopp</button>
     </div>
     <div class="mob-row3">
       <button class="mob-go" id="mob-go-btn" onclick="planRoute()"><span id="mob-go-txt">K&#214;R</span></button>
@@ -119,16 +122,22 @@
     <!-- S&#246;kning -->
     <div class="search-section">
       <div class="section-lbl" id="desk-route-lbl">Rutt</div>
+      <!-- Start -->
       <div class="inp-row">
         <div class="inp-dot s"></div>
         <input class="route-input" id="si" placeholder="Startplats..." autocomplete="off" oninput="onInput('s',false)" onblur="hideSugg('ss')">
         <div class="suggestions" id="ss" style="display:none"></div>
       </div>
+      <!-- Waypoints (dynamiska) -->
+      <div class="wp-list" id="wp-list"></div>
+      <!-- Destination -->
       <div class="inp-row">
         <div class="inp-dot e"></div>
         <input class="route-input" id="ei" placeholder="Destination..." autocomplete="off" oninput="onInput('e',false)" onblur="hideSugg('es')">
         <div class="suggestions" id="es" style="display:none"></div>
       </div>
+      <!-- L&#228;gg till stopp -->
+      <button class="add-wp-btn" onclick="addWaypoint()" id="add-wp-btn">+ L&#228;gg till stopp</button>
       <div class="mode-row">
         <button class="mode-b on" data-mode="car" onclick="setMode('car')">&#128663;<span class="ml" id="ml-car">Bil</span></button>
         <button class="mode-b" data-mode="foot" onclick="setMode('foot')">&#128694;<span class="ml" id="ml-foot">Fot</span></button>
