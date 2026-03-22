@@ -553,7 +553,7 @@ function buildQuery(cats, radius, pointList, max){
 
 // Map our categories to Geoapify category strings
 function buildGeoapifyCategories(cats){
-  // Exact category names from Geoapify docs
+  // Exact categories confirmed by Geoapify API response
   const map = {
     museum:     'entertainment.museum',
     attraction: 'tourism.sights',
@@ -567,10 +567,10 @@ function buildGeoapifyCategories(cats){
     ruins:      'tourism.sights',
     church:     'religion',
     peak:       'natural',
-    beach:      'natural.beach',
+    beach:      'beach',
     waterfall:  'natural',
     nature:     'natural',
-    camping:    'accommodation.camping',
+    camping:    'accommodation',
     restaurant: 'catering.restaurant',
     cafe:       'catering.cafe',
     pub:        'catering.pub',
@@ -579,9 +579,9 @@ function buildGeoapifyCategories(cats){
   };
   const result = new Set();
   cats.forEach(k=>{ if(map[k]) result.add(map[k]); });
-  if(result.size === 0) result.add('tourism.sights');
-  // Geoapify supports many categories in one request &#8212; join with comma
-  return [...result].join(',');
+  if(result.size===0) result.add('tourism.sights');
+  // Limit to 4 to keep URL short
+  return [...result].slice(0,4).join(',');
 }
 
 // Map Geoapify category back to our cat key
