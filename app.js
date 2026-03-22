@@ -553,21 +553,22 @@ function buildQuery(cats, radius, pointList, max){
 
 // Map our categories to Geoapify category strings
 function buildGeoapifyCategories(cats){
+  // Geoapify official category names (v2 Places API)
   const map = {
     museum:     'entertainment.museum',
-    attraction: 'tourism.attraction',
+    attraction: 'tourism.sights',
     viewpoint:  'tourism.sights',
     gallery:    'entertainment.culture',
     zoo:        'entertainment.zoo',
     theme_park: 'entertainment.theme_park',
     aquarium:   'entertainment.aquarium',
-    castle:     'tourism.sights.castle',
-    monument:   'tourism.sights.monument',
-    ruins:      'tourism.sights.ruins',
-    church:     'religion',
-    peak:       'natural.peak',
-    beach:      'natural.beach',
-    waterfall:  'natural.waterfall',
+    castle:     'tourism.sights',
+    monument:   'tourism.sights',
+    ruins:      'tourism.sights',
+    church:     'religion.place_of_worship',
+    peak:       'natural',
+    beach:      'beach',
+    waterfall:  'natural',
     nature:     'natural',
     camping:    'accommodation.camping',
     restaurant: 'catering.restaurant',
@@ -578,7 +579,8 @@ function buildGeoapifyCategories(cats){
   };
   const result = new Set();
   cats.forEach(k=>{ if(map[k]) result.add(map[k]); });
-  return [...result].join(',') || 'tourism';
+  if(result.size === 0) result.add('tourism.sights');
+  return [...result].join(',');
 }
 
 // Map Geoapify category back to our cat key
@@ -698,7 +700,7 @@ async function fetchPOIsAlongRoute(coords, routeDistM){
         '?categories=' + geoCats +
         '&filter=circle:' + lon + ',' + lat + ',' + radiusM +
         '&limit=30' +
-        '&lang=' + (lang==='sv'?'sv':'en') +
+        '&lang=en' +
         '&apiKey=' + GKEY;
       const resp = await fetch(url);
       if(!resp.ok){ console.warn('Geoapify point',si,'error:',resp.status); continue; }
