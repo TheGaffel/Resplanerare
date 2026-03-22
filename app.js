@@ -553,7 +553,6 @@ function buildQuery(cats, radius, pointList, max){
 
 // Map our categories to Geoapify category strings
 function buildGeoapifyCategories(cats){
-  // Geoapify official category names (v2 Places API)
   const map = {
     museum:     'entertainment.museum',
     attraction: 'tourism.sights',
@@ -580,7 +579,8 @@ function buildGeoapifyCategories(cats){
   const result = new Set();
   cats.forEach(k=>{ if(map[k]) result.add(map[k]); });
   if(result.size === 0) result.add('tourism.sights');
-  return [...result].join(',');
+  // Max 5 categories to keep URL short
+  return [...result].slice(0,5).join(',');
 }
 
 // Map Geoapify category back to our cat key
@@ -620,14 +620,14 @@ async function fetchPOIsNearby(lat, lon, silent){
   const geoCats = buildGeoapifyCategories([...activeCats]);
 
   try{
-    const url = 'https://api.geoapify.com/v2/places' +
-      '?categories=' + geoCats +
-      '&filter=circle:' + lon + ',' + lat + ',' + radiusM +
-      '&limit=50' +
-      '&lang=' + (lang==='sv'?'sv':'en') +
-      '&apiKey=' + GKEY;
-    const resp = await fetch(url);
-    if(!resp.ok){ console.error('Geoapify nearby error:', resp.status); if(!silent) setLoad(false); return; }
+    const url = 'https://api.geoapify.com/v2/places?apiKey=' + GKEY;
+    const body = JSON.stringify({
+      categories: geoCats.split(','),
+      filters: { circle: { lon, lat, radiusMeters: radiusM } },
+      limit: 50, lang: 'en'
+    });
+    const resp = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body });
+    if(!resp.ok){ console.error('Geoapify nearby error:', resp.status, await resp.text()); if(!silent) setLoad(false); return; }
     const data = await resp.json();
     const features = data.features || [];
     console.log('Geoapify nearby:', features.length, 'results');
@@ -696,13 +696,18 @@ async function fetchPOIsAlongRoute(coords, routeDistM){
     const [lat,lon] = samples[si];
     setProgress(30 + Math.round((si/samples.length)*65), 'S&#246;ker... ('+(si+1)+'/'+samples.length+')');
     try{
-      const url = 'https://api.geoapify.com/v2/places' +
-        '?categories=' + geoCats +
-        '&filter=circle:' + lon + ',' + lat + ',' + radiusM +
-        '&limit=30' +
-        '&lang=en' +
-        '&apiKey=' + GKEY;
-      const resp = await fetch(url);
+      const url = 'https://api.geoapify.com/v2/places?apiKey=' + GKEY;
+      const body = JSON.stringify({
+        categories: geoCats.split(','),
+        filters: { circle: { lon, lat, radiusMeters: radiusM } },
+        limit: 30,
+        lang: 'en'
+      });
+      const resp = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body
+      });
       if(!resp.ok){ console.warn('Geoapify point',si,'error:',resp.status); continue; }
       const data = await resp.json();
       const features = data.features || [];
