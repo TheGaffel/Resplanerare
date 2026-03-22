@@ -647,29 +647,24 @@ function makePopupHTML(p){
   const cat = CATS[p.cat];
   const parts = [];
   if(p.distFromUser !== null) parts.push(p.distFromUser+' '+t('kmAway'));
-  if(p.rating) parts.push('&#11088; '+p.rating.toFixed(1)+' '+t('rating'));
+  if(p.rating) parts.push('&#11088; '+p.rating.toFixed(1));
   if(p.detourMins !== null) parts.push('+'+p.detourMins+'min '+t('detourLbl'));
   if(p.hours){
     if(p.hours.open === true) parts.push('<span style="color:var(--green)">&#9679; '+t('open')+'</span>');
     else if(p.hours.open === false) parts.push('<span style="color:var(--red)">&#9679; '+t('closed')+'</span>');
-    if(p.hours.text) parts.push(p.hours.text);
   }
-  if(p.fee){
-    if(p.fee.free) parts.push('<span style="color:var(--green)">'+t('free')+'</span>');
-    else parts.push(t('fee')+(p.fee.amount?' ('+p.fee.amount+')':''));
-  }
-
-  return '<div id="pop-'+p.id.replace(/[|.]/g,'-')+'">' +
-    '<div class="pop-title">'+(cat?cat.icon:'')+' '+p.name+'</div>' +
-    '<div class="pop-type">'+(cat?cat.lbl[lang]:p.cat)+'</div>' +
-    (parts.length?'<div class="pop-meta">'+parts.join(' &#183; ')+'</div>':'') +
-    '<div class="pop-actions">' +
-      '<div class="pop-btn" onclick="focusPOIById(\''+p.id+'\')">'+t('focusMap')+'</div>' +
-      '<div class="pop-btn" onclick="openInMaps('+p.lat+','+p.lon+',\''+p.name.replace(/'/g,'\\\'')+'\')">'+ t('openMaps')+'</div>' +
-      '<div class="pop-btn" onclick="sharePOI(\''+p.id+'\')">'+ t('shareItem')+'</div>' +
-    '</div>' +
-  '</div>';
+  if(p.fee){ if(p.fee.free) parts.push('<span style="color:var(--green)">'+t('free')+'</span>'); else parts.push(t('fee')); }
+  return '<div class="pop-title">'+(cat?cat.icon+' ':'')+p.name+'</div>'+
+    '<div class="pop-type">'+(cat?cat.lbl[lang]:p.cat)+'</div>'+
+    (parts.length?'<div class="pop-meta">'+parts.join(' &#183; ')+'</div>':'')+
+    '<div class="pop-actions">'+
+      '<div class="pop-btn" data-pid="'+p.id+'" onclick="focusPOIById(this.dataset.pid)">'+t('focusMap')+'</div>'+
+      '<div class="pop-btn" data-lat="'+p.lat+'" data-lon="'+p.lon+'" data-name="'+p.name.replace(/"/g,'&quot;')+'" onclick="openInMapsBtn(this)">'+t('openMaps')+'</div>'+
+      '<div class="pop-btn" style="background:var(--amber-bg);border-color:var(--amber-d);color:var(--amber)" data-pid="'+p.id+'" onclick="addToRouteDirect(this.dataset.pid)">&#128784; '+(lang==='sv'?'Rutt':'Route')+'</div>'+
+      '<div class="pop-btn" data-pid="'+p.id+'" onclick="sharePOI(this.dataset.pid)">'+t('shareItem')+'</div>'+
+    '</div>';
 }
+
 
 function updatePopupImg(p){
   const popEl = document.getElementById('pop-'+p.id.replace(/[|.]/g,'-'));
@@ -1359,6 +1354,16 @@ function toggleFavBtn(btn){ toggleFav(btn.dataset.pid); }
 function toggleVisitedBtn(btn){ toggleVisited(btn.dataset.pid); }
 function openJournalBtn(btn){ openJournal(btn.dataset.pid, btn.dataset.name); }
 function openInMapsBtn(btn){ openInMaps(parseFloat(btn.dataset.lat),parseFloat(btn.dataset.lon),btn.dataset.name); }
+function addToRouteDirect(id){
+  const p=allPOIs.find(p2=>p2.id===id);
+  if(!p)return;
+  setPOIState(p.id,{fav:true});
+  const wpid='wp'+(++wpCounter);
+  waypoints.push({id:wpid,name:p.name,coords:{lat:p.lat,lon:p.lon}});
+  renderWaypoints();
+  if(sCoords&&eCoords)planRoute();
+  toast((lang==='sv'?'Lagt till: ':'Added: ')+p.name);
+}
 function addToRouteBtn(btn){
   const p=allPOIs.find(p2=>p2.id===btn.dataset.pid);
   if(!p)return;
