@@ -20,11 +20,6 @@
 <body>
 
 <!-- &#9472;&#9472; KARTA &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472; -->
-<!-- Progress bar -->
-<div id="progress-bar-wrap"><div id="progress-bar"></div></div>
-<!-- Status toast -->
-<div id="status-toast"><div class="st-spinner"></div><span id="st-txt">Laddar...</span></div>
-
 <div id="map"></div>
 
 <!-- &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
@@ -46,7 +41,6 @@
         <input class="mob-input" id="mob-si" placeholder="Startplats..." autocomplete="off" oninput="onInput('s',true)" onblur="hideSugg('mob-ss')">
         <div class="suggestions" id="mob-ss" style="display:none"></div>
       </div>
-      <!-- Mobile waypoints -->
       <div id="mob-wp-list"></div>
       <div class="mob-inp-wrap">
         <div class="mob-dot e"></div>
@@ -122,21 +116,17 @@
     <!-- S&#246;kning -->
     <div class="search-section">
       <div class="section-lbl" id="desk-route-lbl">Rutt</div>
-      <!-- Start -->
       <div class="inp-row">
         <div class="inp-dot s"></div>
         <input class="route-input" id="si" placeholder="Startplats..." autocomplete="off" oninput="onInput('s',false)" onblur="hideSugg('ss')">
         <div class="suggestions" id="ss" style="display:none"></div>
       </div>
-      <!-- Waypoints (dynamiska) -->
       <div class="wp-list" id="wp-list"></div>
-      <!-- Destination -->
       <div class="inp-row">
         <div class="inp-dot e"></div>
         <input class="route-input" id="ei" placeholder="Destination..." autocomplete="off" oninput="onInput('e',false)" onblur="hideSugg('es')">
         <div class="suggestions" id="es" style="display:none"></div>
       </div>
-      <!-- L&#228;gg till stopp -->
       <button class="add-wp-btn" onclick="addWaypoint()" id="add-wp-btn">+ L&#228;gg till stopp</button>
       <div class="mode-row">
         <button class="mode-b on" data-mode="car" onclick="setMode('car')">&#128663;<span class="ml" id="ml-car">Bil</span></button>

@@ -1,6 +1,6 @@
 
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
-// SPR\u00c5K
+// SPR&#197;K
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
 let lang = 'sv';
 const T = {
@@ -8,23 +8,23 @@ const T = {
     logo:'Ruttkarta', go:'PLANERA RUTT', startPH:'Startplats...', endPH:'Destination...',
     routeLbl:'Rutt', gpsLbl:'GPS & Nearby', catLbl:'Kategorier',
     car:'Bil',foot:'Fot',bike:'Cykel',transit:'Buss',
-    gpsOn:'Aktivera GPS', gpsOff:'Stoppa GPS', gpsTracking:'F\u00f6ljer dig...',
-    searchView:'S\u00f6k i kartvy',
-    tabPOIs:'Sev\u00e4rdheter', tabTrips:'Resor', tabJournal:'Dagbok',
-    sortDist:'Avst\u00e5nd', sortRoute:'L\u00e4ngs rutten', sortRating:'Betyg', sortName:'Namn A&#8211;\u00d6',
-    saveTrip:'Spara', saveTitle:'Spara resa', namePH:'Namn p\u00e5 resan...',
+    gpsOn:'Aktivera GPS', gpsOff:'Stoppa GPS', gpsTracking:'F&#246;ljer dig...',
+    searchView:'S&#246;k i kartvy',
+    tabPOIs:'Sev&#228;rdheter', tabTrips:'Resor', tabJournal:'Dagbok',
+    sortDist:'Avst&#229;nd', sortRoute:'L&#228;ngs rutten', sortRating:'Betyg', sortName:'Namn A&#8211;&#214;',
+    saveTrip:'Spara', saveTitle:'Spara resa', namePH:'Namn p&#229; resan...',
     save:'Spara', cancel:'Avbryt',
-    fav:'&#11088; Favorit', unfav:'&#9734; Ta bort', markVis:'&#9989; Bes\u00f6kt', unmarkVis:'&#9675; Ej bes\u00f6kt',
+    fav:'&#11088; Favorit', unfav:'&#9734; Ta bort', markVis:'&#9989; Bes&#246;kt', unmarkVis:'&#9675; Ej bes&#246;kt',
     journal:'&#128211; Anteckning', focusMap:'&#128506; Visa', openMaps:'&#129517; Navigera', shareItem:'&#128279; Dela',
-    calcDetour:'Ber\u00e4kna avstickare',
-    kmAway:'km bort', kmFromStart:'km in p\u00e5 rutten', detourLbl:'avstickare',
-    open:'\u00d6ppet nu', closed:'St\u00e4ngt', unknownHours:'Ok\u00e4nd \u00f6ppettid',
-    free:'Gratis', fee:'Intr\u00e4de', unknownFee:'',
-    calculating:'Ber\u00e4knar rutt...', fetchPOIs:'H\u00e4mtar sev\u00e4rdheter...',
+    calcDetour:'Ber&#228;kna avstickare',
+    kmAway:'km bort', kmFromStart:'km in p&#229; rutten', detourLbl:'avstickare',
+    open:'&#214;ppet nu', closed:'St&#228;ngt', unknownHours:'Ok&#228;nd &#246;ppettid',
+    free:'Gratis', fee:'Intr&#228;de', unknownFee:'',
+    calculating:'Ber&#228;knar rutt...', fetchPOIs:'H&#228;mtar sev&#228;rdheter...',
     ready:'Redo', routeDone:'Rutt klar',
-    geocodeErr:'Platsen hittades inte.', routeErr:'Kunde inte ber\u00e4kna rutt.',
-    gpsLocating:'H\u00e4mtar position...', gpsDone:'Position hittad',gpsErr:'GPS-fel',
-    noPOIs:'Inga sev\u00e4rdheter hittades.', noTrips:'Inga sparade resor.', noJournal:'Inga anteckningar.',
+    geocodeErr:'Platsen hittades inte.', routeErr:'Kunde inte ber&#228;kna rutt.',
+    gpsLocating:'H&#228;mtar position...', gpsDone:'Position hittad',gpsErr:'GPS-fel',
+    noPOIs:'Inga sev&#228;rdheter hittades.', noTrips:'Inga sparade resor.', noJournal:'Inga anteckningar.',
     journalTitle:'Anteckning', journalPH:'Skriv dina minnen...',
     shareTitle:'Dela', shareCopy:'Kopiera',
     saved:'Sparad!', deleted:'Borttagen', copied:'Kopierad!',
@@ -117,15 +117,15 @@ function updateSortOptions(){
 let theme = localStorage.getItem('rk_theme') || 'dark';
 function applyTheme(){
   document.documentElement.setAttribute('data-theme', theme);
-  const icon = theme === 'dark' ? '&#127769;' : '&#9728;&#65039;';
-  ['desk-theme-btn','mob-theme-btn'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) el.textContent = icon;
+  const icons = {dark:'&#127769;', light:'&#9728;&#65039;', unicorn:'&#129412;'};
+  ['desk-theme-btn','mob-theme-btn'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.textContent = icons[theme]||'&#127769;';
   });
   localStorage.setItem('rk_theme', theme);
 }
 function toggleTheme(){
-  theme = theme === 'dark' ? 'light' : 'dark';
+  theme = theme==='dark'?'light':theme==='light'?'unicorn':'dark';
   applyTheme();
 }
 
@@ -138,7 +138,7 @@ const CATS = {
   viewpoint: {icon:'&#128301;',lbl:{sv:'Utsikt',   en:'Viewpoint'},   tag:['tourism','viewpoint'],       bg:'rgba(91,141,184,.15)'},
   gallery:   {icon:'&#128444;',lbl:{sv:'Galleri',  en:'Gallery'},     tag:['tourism','gallery'],         bg:'rgba(91,141,184,.15)'},
   zoo:       {icon:'&#129409;',lbl:{sv:'Djurpark', en:'Zoo'},         tag:['tourism','zoo'],             bg:'rgba(91,141,184,.15)'},
-  theme_park:{icon:'&#127905;',lbl:{sv:'N\u00f6jespark',en:'Theme Park'},  tag:['tourism','theme_park'],      bg:'rgba(91,141,184,.15)'},
+  theme_park:{icon:'&#127905;',lbl:{sv:'N&#246;jespark',en:'Theme Park'},  tag:['tourism','theme_park'],      bg:'rgba(91,141,184,.15)'},
   aquarium:  {icon:'&#128031;',lbl:{sv:'Akvarium', en:'Aquarium'},    tag:['tourism','aquarium'],        bg:'rgba(91,141,184,.15)'},
   castle:    {icon:'&#127984;',lbl:{sv:'Slott',    en:'Castle'},      tag:['historic','castle'],         bg:'rgba(212,145,58,.15)'},
   monument:  {icon:'&#128511;',lbl:{sv:'Monument', en:'Monument'},    tag:['historic','monument'],       bg:'rgba(212,145,58,.15)'},
@@ -182,7 +182,7 @@ function toggleCat(k, el){
 }
 
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
-// AVST\u00c5NDFILTER
+// AVST&#197;NDFILTER
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
 const DIST_OPTIONS = [0.5, 1, 2, 5, 10, 20]; // km
 let activeDistKm = 5; // standard
@@ -200,7 +200,7 @@ function buildDistFilter(){
 function setDistFilter(km, el){
   activeDistKm = km;
   document.querySelectorAll('.dist-chip').forEach(b => b.classList.toggle('on', parseFloat(b.textContent) === km));
-  // Om GPS aktiv &#8212; s\u00f6k om
+  // Om GPS aktiv &#8212; s&#246;k om
   if(gpsWatchId !== null && userPos) fetchPOIsNearby(userPos.lat, userPos.lon);
 }
 
@@ -213,14 +213,6 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 map.zoomControl.setPosition('bottomright');
 
-// Fix Leaflet default marker icon paths (broken in some hosting setups)
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png',
-  iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
-  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
-});
-
 const clusterGroup = L.markerClusterGroup({maxClusterRadius:50, showCoverageOnHover:false});
 map.addLayer(clusterGroup);
 
@@ -228,28 +220,26 @@ let routeLayer=null, mStart=null, mEnd=null;
 let allPOIs=[], currentRouteData=null;
 let currentMode='car';
 
-// Auto-s\u00f6k vid panorering (ej i ruttl\u00e4ge eller GPS-l\u00e4ge)
-// Flagga f\u00f6rhindrar loop: s\u00f6kning &#8594; mark\u00f6rer &#8594; karta r\u00f6r sig &#8594; s\u00f6kning igen
+// Auto-s&#246;k vid panorering (ej i ruttl&#228;ge eller GPS-l&#228;ge)
+// Flagga f&#246;rhindrar loop: s&#246;kning &#8594; mark&#246;rer &#8594; karta r&#246;r sig &#8594; s&#246;kning igen
 let mapMoveTimer = null;
 let isFetchingFromMove = false;
 
-let lastMoveFetch = 0;
 map.on('moveend', () => {
-  if(currentRouteData) return;    // Ruttl\u00e4ge
-  if(gpsWatchId !== null) return; // GPS-l\u00e4ge
-  if(isFetchingFromMove) return;  // P\u00e5g\u00e5ende s\u00f6kning
-  if(map.getZoom() < 12) return;  // F\u00f6r utzoomed
-  if(Date.now() - lastMoveFetch < 10000) return; // Max var 10:e sek
+  if(currentRouteData) return;   // Ruttl&#228;ge &#8212; hoppa &#246;ver
+  if(gpsWatchId !== null) return; // GPS hanterar sin egen s&#246;kning
+  if(isFetchingFromMove) return;  // Redan i en s&#246;kning &#8212; hoppa &#246;ver
+  if(map.getZoom() < 12) return;  // F&#246;r utzoomed &#8212; hoppa &#246;ver
 
   clearTimeout(mapMoveTimer);
   mapMoveTimer = setTimeout(() => {
     isFetchingFromMove = true;
-    lastMoveFetch = Date.now();
     const c = map.getCenter();
     fetchPOIsNearby(c.lat, c.lng, true).finally(() => {
-      setTimeout(() => { isFetchingFromMove = false; }, 5000);
+      // V&#228;nta lite extra innan vi till&#229;ter n&#228;sta s&#246;kning
+      setTimeout(() => { isFetchingFromMove = false; }, 2000);
     });
-  }, 2000);
+  }, 1200);
 });
 
 function makeEndIcon(color){
@@ -291,7 +281,7 @@ function startGPS(){
     const {latitude:lat, longitude:lon, accuracy} = pos.coords;
     userPos = {lat, lon};
 
-    // Uppdatera / skapa GPS-mark\u00f6r
+    // Uppdatera / skapa GPS-mark&#246;r
     if(gpsMarker) map.removeLayer(gpsMarker);
     if(gpsAccCircle) map.removeLayer(gpsAccCircle);
     gpsAccCircle = L.circle([lat,lon], {radius:Math.min(accuracy||50,200), color:'#5b8db8', fillOpacity:.06, weight:1}).addTo(map);
@@ -300,11 +290,11 @@ function startGPS(){
       zIndexOffset:1000
     }).addTo(map);
 
-    // Centrera kartan f\u00f6rsta g\u00e5ngen
+    // Centrera kartan f&#246;rsta g&#229;ngen
     if(!map._initialGPSCenter){ map.setView([lat,lon],14); map._initialGPSCenter=true; }
 
     setSB(t('gpsTracking'));
-    // S\u00f6k sev\u00e4rdheter runt nuvarande position (inte tyst &#8212; visa laddning)
+    // S&#246;k sev&#228;rdheter runt nuvarande position (inte tyst &#8212; visa laddning)
     if(!isFetchingFromMove) fetchPOIsNearby(lat, lon, false);
 
   }, err => { stopGPS(); setSB(t('gpsErr')); }, {enableHighAccuracy:true, maximumAge:5000});
@@ -337,17 +327,12 @@ function searchInView(){
 let geoTimers={}, sCoords=null, eCoords=null;
 
 async function geocode(q){
-  if(!q || q.trim().length < 3) return [];
-  const url = 'https://photon.komoot.io/api/?q=' + encodeURIComponent(q.trim()) + '&limit=5';
-  try {
-    const r = await fetch(url);
-    if(!r.ok) return [];
-    const d = await r.json();
-    return (d.features||[]).map(f=>({
-      lat:f.geometry.coordinates[1], lon:f.geometry.coordinates[0],
-      display_name:[f.properties.name,f.properties.city,f.properties.country].filter(Boolean).join(', ')
-    }));
-  } catch(e) { return []; }
+  const r = await fetch('https://photon.komoot.io/api/?q='+encodeURIComponent(q)+'&limit=5&lang='+(lang==='sv'?'sv':'en'));
+  const d = await r.json();
+  return (d.features||[]).map(f=>({
+    lat:f.geometry.coordinates[1], lon:f.geometry.coordinates[0],
+    display_name:[f.properties.name,f.properties.city,f.properties.country].filter(Boolean).join(', ')
+  }));
 }
 
 function onInput(w, isMob){
@@ -359,7 +344,7 @@ function onInput(w, isMob){
   clearTimeout(geoTimers[w]);
   geoTimers[w] = setTimeout(async()=>{
     const val = document.getElementById(srcId).value.trim();
-    if(val.length < 3){ document.getElementById(suggId).style.display='none'; return; }
+    if(val.length < 2){ document.getElementById(suggId).style.display='none'; return; }
     try{ const res = await geocode(val); showSugg(suggId,res,w); }catch(e){}
   }, 350);
 }
@@ -385,7 +370,7 @@ function selSugg(w, suggId, lat, lon, name){
 function hideSugg(id){ setTimeout(()=>{ const el=document.getElementById(id); if(el) el.style.display='none'; },200); }
 
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
-// F\u00c4RDS\u00c4TT
+// F&#196;RDS&#196;TT
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
 function setMode(m){
   currentMode=m;
@@ -437,9 +422,8 @@ async function planRoute(){
 
     currentRouteData={startName:sv,endName:ev,sCoords:{...sCoords},eCoords:{...eCoords},mode:currentMode,distKm,mins,coords};
 
-    setProgress(40, lang==='sv'?'Rutt klar, h\u00e4mtar sev\u00e4rdheter...':'Route done, fetching sights...');
     setSB(t('fetchPOIs'));
-    clusterGroup.clearLayers(); allPOIs = []; // Clear before chunked loading
+    clusterGroup.clearLayers(); allPOIs=[];
     await fetchPOIsAlongRoute(coords, route.distance);
     const n = allPOIs.length;
     document.getElementById('rb-pois').textContent = n;
@@ -466,7 +450,7 @@ async function fetchWikiImage(name){
     imgCache[name] = img;
     return img;
   }catch(e){
-    // F\u00f6rs\u00f6k med Wikimedia Commons s\u00f6kning som backup
+    // F&#246;rs&#246;k med Wikimedia Commons s&#246;kning som backup
     try{
       const url2 = 'https://commons.wikimedia.org/w/api.php?action=query&list=search&srsearch='+encodeURIComponent(name)+'&srnamespace=6&srlimit=1&format=json&origin=*';
       const r2 = await fetch(url2);
@@ -485,18 +469,18 @@ async function fetchWikiImage(name){
 }
 
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
-// \u00d6PPETTIDER & PRISER (OSM-taggar)
+// &#214;PPETTIDER & PRISER (OSM-taggar)
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
 function parseOpeningHours(oh){
   if(!oh) return null;
-  // Enkel koll om \u00f6ppet just nu (Mo-Su 09:00-18:00 etc)
+  // Enkel koll om &#246;ppet just nu (Mo-Su 09:00-18:00 etc)
   try{
     const now = new Date();
     const day = ['Su','Mo','Tu','We','Th','Fr','Sa'][now.getDay()];
     const hm = now.getHours()*100 + now.getMinutes();
     // Hantera "24/7"
     if(oh === '24/7') return {open:true, text:'24/7'};
-    // S\u00f6k efter dagens dag i str\u00e4ngen
+    // S&#246;k efter dagens dag i str&#228;ngen
     const m = oh.match(new RegExp(day+'[^;]*(\\d{2}:\\d{2})-(\\d{2}:\\d{2})'));
     if(m){
       const open  = parseInt(m[1].replace(':',''));
@@ -516,259 +500,60 @@ function parseFee(tags){
 }
 
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
-// OVERPASS &#8212; h\u00e4mta POIs
+// OVERPASS &#8212; h&#228;mta POIs
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
 function densConfig(){
   return {max:150, radius:Math.round(activeDistKm*1000)};
 }
 
 function buildQuery(cats, radius, pointList, max){
-  // Group categories by tag key to reduce query size dramatically
-  // e.g. all "tourism" values become: node["tourism"~"museum|attraction|..."](around:...)
-  const groups = {};
+  const lines = ['[out:json][timeout:60];','('];
   cats.forEach(k=>{
     if(!CATS[k]) return;
     const [tk,tv] = CATS[k].tag;
-    if(!groups[tk]) groups[tk] = [];
-    groups[tk].push(tv);
+    lines.push('node["'+tk+'"="'+tv+'"](around:'+radius+','+pointList+');');
   });
-
-  const lines = ['[out:json][timeout:60];','('];
-  for(const [tagKey, tagVals] of Object.entries(groups)){
-    const valStr = tagVals.join('|');
-    const filter = tagVals.length > 1
-      ? '["'+tagKey+'"~"'+valStr+'"]'
-      : '["'+tagKey+'"="'+tagVals[0]+'"]';
-    lines.push('node'+filter+'(around:'+radius+','+pointList+');');
-    lines.push('way'+filter+'(around:'+radius+','+pointList+');');
-  }
-  lines.push(');','out center tags '+max+';');
+  lines.push(');','out tags '+max+';');
   return lines.join('\n');
-}
-
-
-// &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
-// GEOAPIFY HELPERS
-// &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
-
-// Map our categories to Geoapify category strings
-function buildGeoapifyCategories(cats){
-  // Exact categories confirmed by Geoapify API response
-  const map = {
-    museum:     'entertainment.museum',
-    attraction: 'tourism.sights',
-    viewpoint:  'tourism.sights',
-    gallery:    'entertainment.culture',
-    zoo:        'entertainment.zoo',
-    theme_park: 'entertainment.theme_park',
-    aquarium:   'entertainment.aquarium',
-    castle:     'tourism.sights',
-    monument:   'tourism.sights',
-    ruins:      'tourism.sights',
-    church:     'religion',
-    peak:       'natural',
-    beach:      'beach',
-    waterfall:  'natural',
-    nature:     'natural',
-    camping:    'accommodation',
-    restaurant: 'catering.restaurant',
-    cafe:       'catering.cafe',
-    pub:        'catering.pub',
-    fuel:       'service.vehicle.fuel',
-    charging:   'service.vehicle.charging_station',
-  };
-  const result = new Set();
-  cats.forEach(k=>{ if(map[k]) result.add(map[k]); });
-  if(result.size===0) result.add('tourism.sights');
-  // Limit to 4 to keep URL short
-  return [...result].slice(0,4).join(',');
-}
-
-// Map Geoapify category back to our cat key
-function geoapifyCat(categories){
-  const cat = (categories[0]||'').toLowerCase();
-  if(cat.includes('museum')) return 'museum';
-  if(cat.includes('castle')) return 'castle';
-  if(cat.includes('monument')) return 'monument';
-  if(cat.includes('ruins')) return 'ruins';
-  if(cat.includes('religion')) return 'church';
-  if(cat.includes('zoo')) return 'zoo';
-  if(cat.includes('aquarium')) return 'aquarium';
-  if(cat.includes('theme_park')) return 'theme_park';
-  if(cat.includes('beach')) return 'beach';
-  if(cat.includes('peak')) return 'peak';
-  if(cat.includes('waterfall')) return 'waterfall';
-  if(cat.includes('natural')) return 'nature';
-  if(cat.includes('camping')) return 'camping';
-  if(cat.includes('restaurant')) return 'restaurant';
-  if(cat.includes('cafe')) return 'cafe';
-  if(cat.includes('pub')) return 'pub';
-  if(cat.includes('fuel')) return 'fuel';
-  if(cat.includes('charging')) return 'charging';
-  if(cat.includes('catering')) return 'restaurant';
-  if(cat.includes('gallery')||cat.includes('culture')) return 'gallery';
-  return 'attraction';
 }
 
 async function fetchPOIsNearby(lat, lon, silent){
   if(!silent) setLoad(true, t('fetchPOIs'));
+  // Rensa bara om detta INTE &#228;r en tyst bakgrundss&#246;kning &#8212; undviker flimmer
   clusterGroup.clearLayers();
   allPOIs = [];
-  const radiusM = Math.min(10000, Math.max(500, activeDistKm*1000));
-  const GKEY = '5decbd1af5e544089f2e74a99b66d534';
-
-  // Build category filter from active cats
-  const geoCats = buildGeoapifyCategories([...activeCats]);
-
+  const {max,radius} = densConfig();
+  const query = buildQuery([...activeCats], radius, lat+','+lon, max);
   try{
-    const url = 'https://api.geoapify.com/v2/places' +
-      '?categories=' + geoCats +
-      '&filter=circle:' + lon + ',' + lat + ',' + radiusM +
-      '&limit=50' +
-      '&apiKey=' + GKEY;
-    const resp = await fetch(url);
-    if(!resp.ok){ console.error('Geoapify nearby error:', resp.status); if(!silent) setLoad(false); return; }
-    const data = await resp.json();
-    const features = data.features || [];
-    console.log('Geoapify nearby:', features.length, 'results');
-
-    features.forEach(f=>{
-      const p = f.properties;
-      const [flon,flat] = f.geometry.coordinates;
-      const name = p.name || p.address_line1;
-      if(!name) return;
-      const key = 'geo|' + (p.place_id || (name+'|'+flat.toFixed(4)));
-      const distFromUser = Math.round(Math.hypot(flat-lat,flon-lon)*111*10)/10;
-      const cat = geoapifyCat(p.categories||[]);
-      allPOIs.push({
-        id:key, lat:flat, lon:flon, name,
-        cat, tags:{},
-        routeKm:'0',
-        distFromUser,
-        rating: p.datasource?.raw?.stars ? parseFloat(p.datasource.raw.stars) : null,
-        hours: p.opening_hours ? parseOpeningHours(p.opening_hours) : null,
-        fee: null,
-        website: p.website || null,
-        wikipedia: null, wikiname: name,
-        detourMins:null, detourKm:null, imgUrl:null
-      });
-    });
-
-    allPOIs.forEach(p=>addPOIMarker(p));
+    const data = await (await fetch('https://overpass-api.de/api/interpreter',{method:'POST',body:query,headers:{'Content-Type':'text/plain'}})).json();
+    await processResults(data.elements||[], null, radius/111000, {lat,lon});
     sortAndRender();
     updatePoiCount();
-    if(allPOIs.length>0) openPOIPanel();
+    if(allPOIs.length > 0) openPOIPanel();
     setSB(allPOIs.length+' '+(lang==='sv'?'sev&#228;rdheter hittade':'sights found'));
-
-    // Fetch wiki images in background
-    allPOIs.slice(0,15).forEach(p=>{
-      fetchWikiImage(p.wikiname).then(url=>{
-        p.imgUrl=url;
-        const img=document.getElementById('pc-img-'+p.id.replace(/[|.]/g,'-'));
-        if(img&&url){img.src=url;img.style.display='block';}
-        const ph=document.getElementById('pc-ph-'+p.id.replace(/[|.]/g,'-'));
-        if(ph&&url) ph.style.display='none';
-      });
-    });
-
-  }catch(e){ console.error('Geoapify nearby:', e); }
+  }catch(e){ console.error(e); setSB(lang==='sv'?'Fel vid h&#228;mtning':'Fetch error'); }
   if(!silent) setLoad(false);
 }
 
-
 async function fetchPOIsAlongRoute(coords, routeDistM){
+  clusterGroup.clearLayers();
+  allPOIs = [];
   const routeKm = routeDistM/1000;
-  const radiusM = Math.min(10000, Math.max(2000, activeDistKm*1000));
-  const GKEY = '5decbd1af5e544089f2e74a99b66d534';
-  const geoCats = buildGeoapifyCategories([...activeCats]);
-
-  // Sample every ~60km, max 15 points
-  const numSamples = Math.min(15, Math.max(3, Math.ceil(routeKm/60)));
+  const radius = Math.min(20000, Math.max(5000, activeDistKm*1000));
+  const numSamples = Math.min(40, Math.max(4, Math.ceil(routeKm/25)));
   const step = Math.max(1, Math.floor(coords.length/numSamples));
   const samples = [];
   for(let i=0;i<coords.length;i+=step) samples.push(coords[i]);
   if(samples[samples.length-1]!==coords[coords.length-1]) samples.push(coords[coords.length-1]);
-
-  console.log('Geoapify route:', routeKm.toFixed(0)+'km,', samples.length, 'points, radius:', radiusM+'m');
-  const seen = new Set();
-
-  for(let si=0; si<samples.length; si++){
-    const [lat,lon] = samples[si];
-    setProgress(30 + Math.round((si/samples.length)*65), 'S&#246;ker... ('+(si+1)+'/'+samples.length+')');
-    try{
-      // GET with correct format: filter=circle:lon,lat,radius
-      const url = 'https://api.geoapify.com/v2/places' +
-        '?categories=' + geoCats +
-        '&filter=circle:' + lon + ',' + lat + ',' + radiusM +
-        '&limit=30' +
-        '&apiKey=' + GKEY;
-      const resp = await fetch(url);
-      if(!resp.ok){ console.warn('Geoapify point',si,'error:',resp.status); continue; }
-      const data = await resp.json();
-      const features = data.features || [];
-      console.log('Point',si,':', features.length, 'results');
-
-      features.forEach(f=>{
-        const p = f.properties;
-        const [flon,flat] = f.geometry.coordinates;
-        const name = p.name || p.address_line1;
-        if(!name) return;
-        const key = 'geo|' + (p.place_id || (name+'|'+flat.toFixed(4)));
-        if(seen.has(key)) return;
-        seen.add(key);
-        if(coords && ptLineDist([flat,flon],coords) > radiusM/111000*1.2) return;
-
-        let routeKmPos = 0;
-        let bi=0,bd=Infinity;
-        for(let i=0;i<coords.length;i++){
-          const d=Math.hypot(flat-coords[i][0],flon-coords[i][1]);
-          if(d<bd){bd=d;bi=i;}
-        }
-        for(let i=1;i<=bi;i++) routeKmPos+=Math.hypot(coords[i][0]-coords[i-1][0],coords[i][1]-coords[i-1][1])*111;
-
-        const distFromUser = userPos
-          ? Math.round(Math.hypot(flat-userPos.lat,flon-userPos.lon)*111*10)/10
-          : null;
-        const cat = geoapifyCat(p.categories||[]);
-
-        const poi = {
-          id:key, lat:flat, lon:flon, name, cat, tags:{},
-          routeKm: routeKmPos.toFixed(1),
-          distFromUser,
-          rating: p.datasource?.raw?.stars ? parseFloat(p.datasource.raw.stars) : null,
-          hours: p.opening_hours ? parseOpeningHours(p.opening_hours) : null,
-          fee: null,
-          website: p.website || null,
-          wikipedia: null, wikiname: name,
-          detourMins:null, detourKm:null, imgUrl:null
-        };
-        allPOIs.push(poi);
-        addPOIMarker(poi);
-      });
-
-      sortAndRender();
-      updatePoiCount();
-    }catch(e){ console.error('Geoapify point',si,':',e); }
-
-    // 200ms between requests &#8212; Geoapify handles this fine
-    if(si < samples.length-1) await new Promise(r=>setTimeout(r,200));
-  }
-
-  setProgress(100);
-  console.log('Total POIs:', allPOIs.length);
-
-  // Fetch images in background
-  allPOIs.slice(0,20).forEach(p=>{
-    fetchWikiImage(p.wikiname).then(url=>{
-      p.imgUrl=url;
-      const img=document.getElementById('pc-img-'+p.id.replace(/[|.]/g,'-'));
-      if(img&&url){img.src=url;img.style.display='block';}
-      const ph=document.getElementById('pc-ph-'+p.id.replace(/[|.]/g,'-'));
-      if(ph&&url) ph.style.display='none';
-    });
-  });
+  const pts = samples.map(c=>c[0]+','+c[1]).join(' ');
+  const query = buildQuery([...activeCats], radius, pts, 200);
+  try{
+    const data = await (await fetch('https://overpass-api.de/api/interpreter',{method:'POST',body:query,headers:{'Content-Type':'text/plain'}})).json();
+    await processResults(data.elements||[], coords, radius/111000, null);
+    sortAndRender();
+    updatePoiCount();
+  }catch(e){ console.error(e); }
 }
-
 
 async function processResults(elements, coords, threshold, nearPos){
   const seen = new Set();
@@ -824,15 +609,12 @@ async function processResults(elements, coords, threshold, nearPos){
     });
   });
 
-  // Append to allPOIs (don't overwrite &#8212; supports chunked loading)
-  const globalSeen = new Set(allPOIs.map(p=>p.id));
-  const newPOIs = toProcess.filter(p=>!globalSeen.has(p.id));
-  allPOIs.push(...newPOIs);
+  allPOIs = toProcess;
 
-  // L\u00e4gg till mark\u00f6rer direkt
+  // L&#228;gg till mark&#246;rer direkt
   allPOIs.forEach(p => addPOIMarker(p));
 
-  // H\u00e4mta bilder i bakgrunden (f\u00f6r de 20 n\u00e4rmaste)
+  // H&#228;mta bilder i bakgrunden (f&#246;r de 20 n&#228;rmaste)
   const first20 = [...allPOIs].slice(0,20);
   first20.forEach(p => {
     fetchWikiImage(p.wikiname).then(url => {
@@ -854,7 +636,7 @@ function addPOIMarker(p){
     .bindPopup(()=>makePopupHTML(p), {maxWidth:280});
   clusterGroup.addLayer(m);
   p._marker = m;
-  // Uppdatera popup med bild n\u00e4r den \u00f6ppnas
+  // Uppdatera popup med bild n&#228;r den &#246;ppnas
   m.on('popupopen', () => {
     if(p.imgUrl) updatePopupImg(p);
     else fetchWikiImage(p.wikiname).then(url=>{ p.imgUrl=url; if(url) updatePopupImg(p); });
@@ -899,7 +681,7 @@ function updatePopupImg(p){
 }
 
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
-// AVST\u00c5ND &#8212; uppdateras l\u00f6pande med GPS
+// AVST&#197;ND &#8212; uppdateras l&#246;pande med GPS
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
 function updateDistances(){
   if(!userPos) return;
@@ -909,7 +691,7 @@ function updateDistances(){
 }
 
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
-// \u00d6PPNA I MAPS
+// &#214;PPNA I MAPS
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
 function openInMaps(lat, lon, name){
   const q = encodeURIComponent(name+' '+lat+','+lon);
@@ -954,7 +736,7 @@ function sortAndRender(){
   else if(sort==='route')  pois.sort((a,b)=>parseFloat(a.routeKm)-parseFloat(b.routeKm));
   else if(sort==='rating') pois.sort((a,b)=>(b.rating||0)-(a.rating||0));
   else if(sort==='name')   pois.sort((a,b)=>a.name.localeCompare(b.name));
-  // Favoriter alltid \u00f6verst
+  // Favoriter alltid &#246;verst
   pois.sort((a,b)=>{ const sa=getPOIState(a.id),sb=getPOIState(b.id); return (sa.fav?0:1)-(sb.fav?0:1); });
 
   const html = renderPOICards(pois);
@@ -962,7 +744,7 @@ function sortAndRender(){
     const el=document.getElementById(id); if(el) el.innerHTML=html||emptyState(t('noPOIs'));
   });
 
-  // Uppdatera mark\u00f6rer
+  // Uppdatera mark&#246;rer
   clusterGroup.clearLayers();
   pois.forEach(p=>{ if(p._marker) clusterGroup.addLayer(p._marker); });
 }
@@ -970,11 +752,12 @@ function sortAndRender(){
 function renderPOICards(pois){
   if(!pois.length) return '';
   const jSet = new Set(loadJournal().map(j=>j.poiId));
+  const priL = {high:'\u2191\u2191 H\u00f6g', med:'\u2191 Medel', low:'\u2193 L\u00e5g'};
+
   return pois.map((p,i)=>{
     const st = getPOIState(p.id);
     const cat = CATS[p.cat];
     const safeId = p.id.replace(/[|.]/g,'-');
-
     const chips = [];
     if(p.distFromUser!==null) chips.push('<span class="chip amber">'+p.distFromUser+' '+t('kmAway')+'</span>');
     if(p.routeKm>0&&currentRouteData) chips.push('<span class="chip blue">'+p.routeKm+' '+t('kmFromStart')+'</span>');
@@ -982,40 +765,51 @@ function renderPOICards(pois){
     else if(currentRouteData) chips.push('<span class="chip" style="cursor:pointer;text-decoration:underline dotted" onclick="calcAndShow(\''+p.id+'\')">' +t('calcDetour')+'</span>');
     if(p.rating) chips.push('<span class="chip star">&#11088; '+p.rating.toFixed(1)+'</span>');
     if(jSet.has(p.id)) chips.push('<span class="chip">&#128211;</span>');
-    if(p.fee){
-      if(p.fee.free) chips.push('<span class="chip green">'+t('free')+'</span>');
-      else chips.push('<span class="chip red">'+t('fee')+(p.fee.amount?' '+p.fee.amount:'')+'</span>');
-    }
-
-    let hoursHtml = '';
+    if(p.website) chips.push('<a class="chip" href="'+p.website+'" target="_blank" style="text-decoration:none;color:var(--blue)">&#127760;</a>');
+    let hoursHtml='';
     if(p.hours){
-      const col = p.hours.open===true?'var(--green)':p.hours.open===false?'var(--red)':'var(--text-m)';
-      const txt = p.hours.open===true?t('open'):p.hours.open===false?t('closed'):p.hours.text||'';
-      if(txt) hoursHtml = '<div class="pc-hours" style="color:'+col+'">'+txt+(p.hours.text&&p.hours.open!==null?' &#183; '+p.hours.text:'')+'</div>';
+      const col=p.hours.open===true?'var(--green)':p.hours.open===false?'var(--red)':'var(--text-m)';
+      const txt=p.hours.open===true?t('open'):p.hours.open===false?t('closed'):p.hours.text||'';
+      if(txt) hoursHtml='<div class="pc-hours" style="color:'+col+'">'+txt+'</div>';
     }
+    const priBadge=st.priority!=='none'?'<span class="pri-badge pri-'+st.priority+'">'+priL[st.priority]+'</span>':'';
+    const catLabel=cat?cat.icon+' '+cat.lbl[lang]:p.cat;
+    const imgHtml=p.imgUrl
+      ?'<img class="pc-img" src="'+p.imgUrl+'" alt="'+p.name+'" id="pc-img-'+safeId+'" loading="lazy">'
+      :'<div class="pc-img-placeholder" id="pc-ph-'+safeId+'">'+(cat?cat.icon:'&#128205;')+'</div>';
 
-    return '<div class="pc'+(st.fav?' fav':'')+(st.visited?' visited':'')+'" style="animation-delay:'+i*.025+'s">' +
-      (p.imgUrl ? '<img class="pc-img" src="'+p.imgUrl+'" alt="'+p.name+'" id="pc-img-'+safeId+'" loading="lazy">' :
-        '<div class="pc-img-placeholder" id="pc-ph-'+safeId+'">'+(cat?cat.icon:'&#128205;')+'</div>') +
-      '<div class="pc-body">' +
-        '<div class="pc-top">' +
-          '<div class="pc-icon" style="background:'+(cat?cat.bg:'rgba(91,141,184,.1)')+'">'+(cat?cat.icon:'&#128205;')+'</div>' +
-          '<div class="pc-info">' +
-            '<div class="pc-name" title="'+p.name+'">'+p.name+'</div>' +
-            '<div class="pc-type">'+(cat?cat.lbl[lang]:p.cat)+'</div>' +
-          '</div>' +
-        '</div>' +
-        '<div class="pc-chips">'+chips.join('')+'</div>' +
-        hoursHtml +
-        '<div class="pc-actions">' +
-          '<button class="pa-btn'+(st.fav?' fav-on':'')+'" onclick="toggleFav(\''+p.id+'\')">'+(st.fav?t('unfav'):t('fav'))+'</button>' +
-          '<button class="pa-btn'+(st.visited?' vis-on':'')+'" onclick="toggleVisited(\''+p.id+'\')">'+(st.visited?t('unmarkVis'):t('markVis'))+'</button>' +
-          '<button class="pa-btn" onclick="openJournal(\''+p.id+'\',\''+p.name.replace(/'/g,'\\\'')+'\')">'+ t('journal')+'</button>' +
-          '<button class="pa-btn" onclick="focusPOIById(\''+p.id+'\')">'+ t('focusMap')+'</button>' +
-          '<button class="pa-btn" onclick="openInMaps('+p.lat+','+p.lon+',\''+p.name.replace(/'/g,'\\\'')+'\')">'+ t('openMaps')+'</button>' +
-        '</div>' +
-      '</div>' +
-    '</div>';
+    return [
+      '<div class="pc'+(st.fav?' fav':'')+(st.visited?' visited':'')+'" style="animation-delay:'+i*.025+'s">',
+        imgHtml,
+        '<div class="pc-body">',
+          '<div class="pc-top">',
+            '<div class="pc-icon" style="background:'+(cat?cat.bg:'rgba(91,141,184,.1)')+'">'+(cat?cat.icon:'&#128205;')+'</div>',
+            '<div class="pc-info">',
+              '<div class="pc-name" title="'+p.name+'">'+p.name+'</div>',
+              '<div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:2px">',
+                '<span class="cat-badge">'+catLabel+'</span>',
+                priBadge,
+              '</div>',
+            '</div>',
+          '</div>',
+          chips.length?'<div class="pc-chips">'+chips.join('')+'</div>':'',
+          hoursHtml,
+          '<div class="pri-row">',
+            '<button class="pri-btn'+(st.priority==='high'?' on-high':'')+'" data-pid="'+p.id+'" data-pri="high" onclick="setPriorityBtn(this)">'+priL.high+'</button>',
+            '<button class="pri-btn'+(st.priority==='med'?' on-med':'')+'" data-pid="'+p.id+'" data-pri="med" onclick="setPriorityBtn(this)">'+priL.med+'</button>',
+            '<button class="pri-btn'+(st.priority==='low'?' on-low':'')+'" data-pid="'+p.id+'" data-pri="low" onclick="setPriorityBtn(this)">'+priL.low+'</button>',
+          '</div>',
+          '<div class="pc-actions">',
+            '<button class="pa-btn" data-pid="'+p.id+'" onclick="addToRouteBtn(this)">&#128784; Rutt</button>',
+            '<button class="pa-btn'+(st.fav?' fav-on':'')+'" data-pid="'+p.id+'" onclick="toggleFavBtn(this)">'+(st.fav?t('unfav'):t('fav'))+'</button>',
+            '<button class="pa-btn'+(st.visited?' vis-on':'')+'" data-pid="'+p.id+'" onclick="toggleVisitedBtn(this)">'+(st.visited?t('unmarkVis'):t('markVis'))+'</button>',
+            '<button class="pa-btn" data-pid="'+p.id+'" data-name="'+p.name.replace(/"/g,'&quot;')+'" onclick="openJournalBtn(this)">'+t('journal')+'</button>',
+            '<button class="pa-btn" data-pid="'+p.id+'" onclick="focusPOIById(this.dataset.pid)">'+t('focusMap')+'</button>',
+            '<button class="pa-btn" data-lat="'+p.lat+'" data-lon="'+p.lon+'" data-name="'+p.name.replace(/"/g,'&quot;')+'" onclick="openInMapsBtn(this)">'+t('openMaps')+'</button>',
+          '</div>',
+        '</div>',
+      '</div>'
+    ].join('');
   }).join('');
 }
 
@@ -1025,7 +819,7 @@ function emptyState(msg){
 
 function updatePoiCount(){
   const n = allPOIs.length;
-  const txt = n+' '+(lang==='sv'?'sev\u00e4rdheter':'sights');
+  const txt = n+' '+(lang==='sv'?'sev&#228;rdheter':'sights');
   ['poi-count','mob-poi-count'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=txt; });
   ['rb-pois'].forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=n; });
 }
@@ -1035,7 +829,7 @@ function updatePoiCount(){
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
 function loadState(){ try{return JSON.parse(localStorage.getItem('rk_poi_state')||'{}')}catch(e){return{}} }
 function saveState(s){ localStorage.setItem('rk_poi_state',JSON.stringify(s)); }
-function getPOIState(id){ return loadState()[id]||{fav:false,visited:false}; }
+function getPOIState(id){ return loadState()[id]||{fav:false,visited:false,priority:'none'}; }
 function setPOIState(id,patch){ const s=loadState(); s[id]={...getPOIState(id),...patch}; saveState(s); }
 
 function toggleFav(id){ const st=getPOIState(id); setPOIState(id,{fav:!st.fav}); refreshMarker(id); sortAndRender(); }
@@ -1195,7 +989,7 @@ function handleImport(e){
 }
 
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
-// URL PARAMETER &#8212; L\u00e4s in delad resa eller POI
+// URL PARAMETER &#8212; L&#228;s in delad resa eller POI
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
 function checkUrlParams(){
   const params=new URLSearchParams(location.search);
@@ -1280,27 +1074,8 @@ function setLoad(show,txt){
   document.getElementById('loading').classList.toggle('show',show);
   if(txt) document.getElementById('load-txt').textContent=txt;
   ['go-btn','mob-go-btn'].forEach(id=>{ const b=document.getElementById(id); if(b) b.disabled=show; });
-  if(show && txt) setProgress(20, txt);
-  if(!show) setProgress(100);
 }
 function setSB(msg){ document.getElementById('sb-txt').textContent=msg; }
-
-// Progress bar & status toast
-function setProgress(pct, msg){
-  const bar = document.getElementById('progress-bar');
-  const toast = document.getElementById('status-toast');
-  const txt = document.getElementById('st-txt');
-  if(bar) bar.style.width = pct + '%';
-  if(msg && txt) txt.textContent = msg;
-  if(toast){
-    if(pct > 0 && pct < 100) toast.classList.add('show');
-    else toast.classList.remove('show');
-  }
-  // Auto-hide at 100%
-  if(pct >= 100){
-    setTimeout(()=>{ if(bar) bar.style.width='0%'; if(toast) toast.classList.remove('show'); }, 800);
-  }
-}
 function closeModal(id){ document.getElementById(id).classList.remove('show'); }
 ['modal-save','modal-journal','modal-share'].forEach(id=>{
   document.getElementById(id).addEventListener('click',e=>{ if(e.target.id===id) closeModal(id); });
@@ -1333,174 +1108,266 @@ function segDist(px,py,ax,ay,bx,by){
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
 
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
-// WAYPOINTS (delstopp)
+// GEOAPIFY HELPERS
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
-let waypoints = [];
-let wpGeoTimers = {};
-let wpCounter = 0;
+const GKEY = '5decbd1af5e544089f2e74a99b66d534';
+
+function buildGeoapifyCategories(cats){
+  const map = {
+    museum:'entertainment.museum', attraction:'tourism.sights',
+    viewpoint:'tourism.sights', gallery:'entertainment.culture',
+    zoo:'entertainment.zoo', theme_park:'entertainment.theme_park',
+    aquarium:'entertainment.aquarium', castle:'tourism.sights',
+    monument:'tourism.sights', ruins:'tourism.sights',
+    church:'religion', peak:'natural', beach:'beach',
+    waterfall:'natural', nature:'natural', camping:'accommodation',
+    restaurant:'catering.restaurant', cafe:'catering.cafe',
+    pub:'catering.pub', fuel:'service.vehicle.fuel',
+    charging:'service.vehicle.charging_station',
+  };
+  const result = new Set();
+  cats.forEach(k=>{ if(map[k]) result.add(map[k]); });
+  if(result.size===0) result.add('tourism.sights');
+  return [...result].slice(0,4).join(',');
+}
+
+function geoapifyCat(categories){
+  const cat = (categories[0]||'').toLowerCase();
+  if(cat.includes('museum')) return 'museum';
+  if(cat.includes('castle')) return 'castle';
+  if(cat.includes('monument')) return 'monument';
+  if(cat.includes('zoo')) return 'zoo';
+  if(cat.includes('aquarium')) return 'aquarium';
+  if(cat.includes('theme_park')) return 'theme_park';
+  if(cat.includes('religion')) return 'church';
+  if(cat.includes('beach')) return 'beach';
+  if(cat.includes('natural')) return 'nature';
+  if(cat.includes('camping')) return 'camping';
+  if(cat.includes('restaurant')) return 'restaurant';
+  if(cat.includes('cafe')) return 'cafe';
+  if(cat.includes('pub')) return 'pub';
+  if(cat.includes('fuel')) return 'fuel';
+  if(cat.includes('charging')) return 'charging';
+  if(cat.includes('culture')||cat.includes('gallery')) return 'gallery';
+  if(cat.includes('catering')) return 'restaurant';
+  return 'attraction';
+}
+
+async function fetchPOIsNearby(lat, lon, silent){
+  if(!silent) setLoad(true, t('fetchPOIs'));
+  clusterGroup.clearLayers(); allPOIs=[];
+  const radiusM = Math.min(10000, Math.max(500, activeDistKm*1000));
+  const geoCats = buildGeoapifyCategories([...activeCats]);
+  try{
+    const url='https://api.geoapify.com/v2/places?categories='+geoCats+'&filter=circle:'+lon+','+lat+','+radiusM+'&limit=50&apiKey='+GKEY;
+    const resp=await fetch(url);
+    if(!resp.ok){console.error('Geoapify nearby:',resp.status);if(!silent)setLoad(false);return;}
+    const data=await resp.json();
+    const features=data.features||[];
+    console.log('Geoapify nearby:',features.length,'results');
+    features.forEach(f=>{
+      const p=f.properties,[flon,flat]=f.geometry.coordinates;
+      const name=p.name||p.address_line1;if(!name)return;
+      const key='geo|'+(p.place_id||(name+'|'+flat.toFixed(4)));
+      const cat=geoapifyCat(p.categories||[]);
+      const poi={id:key,lat:flat,lon:flon,name,cat,tags:{},routeKm:'0',
+        distFromUser:Math.round(Math.hypot(flat-lat,flon-lon)*111*10)/10,
+        rating:p.datasource?.raw?.stars?parseFloat(p.datasource.raw.stars):null,
+        hours:p.opening_hours?parseOpeningHours(p.opening_hours):null,
+        fee:null,website:p.website||null,wikipedia:null,wikiname:name,
+        detourMins:null,detourKm:null,imgUrl:null};
+      allPOIs.push(poi);addPOIMarker(poi);
+    });
+    sortAndRender();updatePoiCount();
+    if(allPOIs.length>0)openPOIPanel();
+    setSB(allPOIs.length+' '+(lang==='sv'?'sev&#228;rdheter hittade':'sights found'));
+    allPOIs.slice(0,15).forEach(p=>{fetchWikiImage(p.wikiname).then(url=>{p.imgUrl=url;const img=document.getElementById('pc-img-'+p.id.replace(/[|.]/g,'-'));if(img&&url){img.src=url;img.style.display='block';}const ph=document.getElementById('pc-ph-'+p.id.replace(/[|.]/g,'-'));if(ph&&url)ph.style.display='none';});});
+  }catch(e){console.error('Geoapify nearby:',e);}
+  if(!silent)setLoad(false);
+}
+
+async function fetchPOIsAlongRoute(coords, routeDistM){
+  const routeKm=routeDistM/1000;
+  const radiusM=Math.min(10000,Math.max(2000,activeDistKm*1000));
+  const geoCats=buildGeoapifyCategories([...activeCats]);
+  const numSamples=Math.min(15,Math.max(3,Math.ceil(routeKm/60)));
+  const step=Math.max(1,Math.floor(coords.length/numSamples));
+  const samples=[];
+  for(let i=0;i<coords.length;i+=step) samples.push(coords[i]);
+  if(samples[samples.length-1]!==coords[coords.length-1]) samples.push(coords[coords.length-1]);
+  console.log('Geoapify route:',routeKm.toFixed(0)+'km,',samples.length,'points, radius:',radiusM+'m');
+  const seen=new Set();
+  for(let si=0;si<samples.length;si++){
+    const [lat,lon]=samples[si];
+    setProgress(30+Math.round((si/samples.length)*65),'S&#246;ker... ('+(si+1)+'/'+samples.length+')');
+    try{
+      const url='https://api.geoapify.com/v2/places?categories='+geoCats+'&filter=circle:'+lon+','+lat+','+radiusM+'&limit=30&apiKey='+GKEY;
+      const resp=await fetch(url);
+      if(!resp.ok){console.warn('Geoapify point',si,'error:',resp.status);continue;}
+      const data=await resp.json();
+      const features=data.features||[];
+      console.log('Point',si,':',features.length,'results');
+      features.forEach(f=>{
+        const p=f.properties,[flon,flat]=f.geometry.coordinates;
+        const name=p.name||p.address_line1;if(!name)return;
+        const key='geo|'+(p.place_id||(name+'|'+flat.toFixed(4)));
+        if(seen.has(key))return;seen.add(key);
+        if(coords&&ptLineDist([flat,flon],coords)>radiusM/111000*1.2)return;
+        let routeKmPos=0,bi=0,bd=Infinity;
+        for(let i=0;i<coords.length;i++){const d=Math.hypot(flat-coords[i][0],flon-coords[i][1]);if(d<bd){bd=d;bi=i;}}
+        for(let i=1;i<=bi;i++) routeKmPos+=Math.hypot(coords[i][0]-coords[i-1][0],coords[i][1]-coords[i-1][1])*111;
+        const cat=geoapifyCat(p.categories||[]);
+        const poi={id:key,lat:flat,lon:flon,name,cat,tags:{},
+          routeKm:routeKmPos.toFixed(1),
+          distFromUser:userPos?Math.round(Math.hypot(flat-userPos.lat,flon-userPos.lon)*111*10)/10:null,
+          rating:p.datasource?.raw?.stars?parseFloat(p.datasource.raw.stars):null,
+          hours:p.opening_hours?parseOpeningHours(p.opening_hours):null,
+          fee:null,website:p.website||null,wikipedia:null,wikiname:name,
+          detourMins:null,detourKm:null,imgUrl:null};
+        allPOIs.push(poi);addPOIMarker(poi);
+      });
+      sortAndRender();updatePoiCount();
+    }catch(e){console.error('Geoapify point',si,':',e);}
+    if(si<samples.length-1) await new Promise(r=>setTimeout(r,200));
+  }
+  setProgress(100);
+  console.log('Total POIs:',allPOIs.length);
+  allPOIs.slice(0,20).forEach(p=>{fetchWikiImage(p.wikiname).then(url=>{p.imgUrl=url;const img=document.getElementById('pc-img-'+p.id.replace(/[|.]/g,'-'));if(img&&url){img.src=url;img.style.display='block';}const ph=document.getElementById('pc-ph-'+p.id.replace(/[|.]/g,'-'));if(ph&&url)ph.style.display='none';});});
+}
+
+// &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
+// WAYPOINTS
+// &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
+let waypoints=[], wpGeoTimers={}, wpCounter=0;
 
 function addWaypoint(){
-  const id = 'wp' + (++wpCounter);
-  waypoints.push({id, name:'', coords:null});
+  const id='wp'+(++wpCounter);
+  waypoints.push({id,name:'',coords:null});
   renderWaypoints();
 }
-
-function removeWaypoint(id){
-  waypoints = waypoints.filter(w=>w.id!==id);
-  renderWaypoints();
-}
-
-function moveWaypoint(id, dir){
-  const idx = waypoints.findIndex(w=>w.id===id);
-  const newIdx = idx + dir;
-  if(newIdx < 0 || newIdx >= waypoints.length) return;
-  [waypoints[idx], waypoints[newIdx]] = [waypoints[newIdx], waypoints[idx]];
+function removeWaypoint(id){ waypoints=waypoints.filter(w=>w.id!==id); renderWaypoints(); }
+function moveWaypoint(id,dir){
+  const idx=waypoints.findIndex(w=>w.id===id);
+  const ni=idx+dir;
+  if(ni<0||ni>=waypoints.length)return;
+  [waypoints[idx],waypoints[ni]]=[waypoints[ni],waypoints[idx]];
   renderWaypoints();
 }
 
 function renderWaypoints(){
   ['wp-list','mob-wp-list'].forEach(listId=>{
-    const el = document.getElementById(listId);
-    if(!el) return;
-    const isMob = listId.startsWith('mob');
-    el.innerHTML = '';
+    const el=document.getElementById(listId);
+    if(!el)return;
+    const isMob=listId.startsWith('mob');
+    const inputCls=isMob?'mob-input':'route-input';
+    el.innerHTML='';
     waypoints.forEach((wp,i)=>{
-      const row = document.createElement('div');
-      row.className = 'wp-row';
-
-      // Input wrapper
-      const wrap = document.createElement('div');
-      wrap.className = 'wp-inp-wrap';
-      const dot = document.createElement('div');
-      dot.className = 'wp-dot-abs';
+      const row=document.createElement('div'); row.className='wp-row';
+      const wrap=document.createElement('div'); wrap.className='wp-inp-wrap';
+      const dot=document.createElement('div'); dot.className='wp-dot-abs';
       wrap.appendChild(dot);
-
-      const inp = document.createElement('input');
-      inp.className = isMob ? 'mob-input' : 'wp-input';
-      inp.style.paddingLeft = '24px';
-      inp.id = listId + 'I' + wp.id;
-      inp.placeholder = 'Via...';
-      inp.value = wp.name;
-      inp.autocomplete = 'off';
-      inp.dataset.wpid = wp.id;
-      inp.dataset.lid = listId;
-      inp.addEventListener('input', function(){ onWPInput(this); });
-      inp.addEventListener('blur', function(){
-        setTimeout(()=>{ const s=document.getElementById(listId+'S'+wp.id); if(s) s.style.display='none'; },200);
-      });
+      const inp=document.createElement('input');
+      inp.className=inputCls; inp.style.paddingLeft='24px';
+      inp.id=listId+'I'+wp.id; inp.placeholder='Via...'; inp.value=wp.name;
+      inp.autocomplete='off'; inp.dataset.wpid=wp.id; inp.dataset.lid=listId;
+      inp.addEventListener('input',function(){onWPInput(this);});
+      inp.addEventListener('blur',function(){setTimeout(()=>{const s=document.getElementById(listId+'S'+wp.id);if(s)s.style.display='none';},200);});
       wrap.appendChild(inp);
-
-      const sugg = document.createElement('div');
-      sugg.className = 'suggestions wp-suggestions';
-      sugg.id = listId + 'S' + wp.id;
-      sugg.style.display = 'none';
-      wrap.appendChild(sugg);
-      row.appendChild(wrap);
-
-      // Up/down controls
-      const ctrl = document.createElement('div');
-      ctrl.className = 'wp-controls';
-      if(i>0){
-        const up = document.createElement('button');
-        up.className = 'wp-ctrl-btn';
-        up.innerHTML = '&#9650;';
-        up.addEventListener('click', ()=>moveWaypoint(wp.id,-1));
-        ctrl.appendChild(up);
-      } else {
-        ctrl.appendChild(Object.assign(document.createElement('div'),{style:'height:14px'}));
-      }
-      if(i<waypoints.length-1){
-        const dn = document.createElement('button');
-        dn.className = 'wp-ctrl-btn';
-        dn.innerHTML = '&#9660;';
-        dn.addEventListener('click', ()=>moveWaypoint(wp.id,1));
-        ctrl.appendChild(dn);
-      } else {
-        ctrl.appendChild(Object.assign(document.createElement('div'),{style:'height:14px'}));
-      }
+      const sugg=document.createElement('div');
+      sugg.className='suggestions wp-suggestions'; sugg.id=listId+'S'+wp.id; sugg.style.display='none';
+      wrap.appendChild(sugg); row.appendChild(wrap);
+      const ctrl=document.createElement('div'); ctrl.className='wp-controls';
+      if(i>0){const up=document.createElement('button');up.className='wp-ctrl-btn';up.innerHTML='&#9650;';up.addEventListener('click',()=>moveWaypoint(wp.id,-1));ctrl.appendChild(up);}
+      else ctrl.appendChild(Object.assign(document.createElement('div'),{style:'height:14px'}));
+      if(i<waypoints.length-1){const dn=document.createElement('button');dn.className='wp-ctrl-btn';dn.innerHTML='&#9660;';dn.addEventListener('click',()=>moveWaypoint(wp.id,1));ctrl.appendChild(dn);}
+      else ctrl.appendChild(Object.assign(document.createElement('div'),{style:'height:14px'}));
       row.appendChild(ctrl);
-
-      // Remove button
-      const rm = document.createElement('button');
-      rm.className = 'wp-remove';
-      rm.innerHTML = '&#215;';
-      rm.addEventListener('click', ()=>removeWaypoint(wp.id));
-      row.appendChild(rm);
-
+      const rm=document.createElement('button'); rm.className='wp-remove'; rm.innerHTML='&#215;';
+      rm.addEventListener('click',()=>removeWaypoint(wp.id)); row.appendChild(rm);
       el.appendChild(row);
     });
   });
 }
 
-
 function onWPInput(inp){
-  const wpId = inp.dataset.wpid;
-  const listId = inp.dataset.lid;
-  const val = inp.value;
-  const wp = waypoints.find(w=>w.id===wpId);
-  if(wp){ wp.name=val; wp.coords=null; }
-  // Sync desktop <-> mobile
-  const otherId = (listId==='wp-list'?'mob-wp-list':'wp-list') + 'I' + wpId;
-  const other = document.getElementById(otherId);
-  if(other && other !== inp) other.value = val;
-  // Geocode
+  const wpId=inp.dataset.wpid, listId=inp.dataset.lid, val=inp.value;
+  const wp=waypoints.find(w=>w.id===wpId);
+  if(wp){wp.name=val;wp.coords=null;}
+  const otherId=(listId==='wp-list'?'mob-wp-list':'wp-list')+'I'+wpId;
+  const other=document.getElementById(otherId);
+  if(other&&other!==inp) other.value=val;
   clearTimeout(wpGeoTimers[wpId]);
-  if(val.trim().length < 3) return;
-  wpGeoTimers[wpId] = setTimeout(async()=>{
-    const sid = listId + 'S' + wpId;
-    const suggEl = document.getElementById(sid);
-    if(!suggEl) return;
+  if(val.trim().length<3)return;
+  wpGeoTimers[wpId]=setTimeout(async()=>{
+    const sid=listId+'S'+wpId;
+    const suggEl=document.getElementById(sid);
+    if(!suggEl)return;
     try{
-      const results = await geocode(val);
-      if(!results.length){ suggEl.style.display='none'; return; }
-      // Build suggestions with DOM to avoid quoting issues
-      suggEl.innerHTML = '';
+      const results=await geocode(val);
+      if(!results.length){suggEl.style.display='none';return;}
+      suggEl.innerHTML='';
       results.slice(0,5).forEach(r=>{
-        const div = document.createElement('div');
-        div.className = 'sugg-item';
-        div.textContent = r.display_name;
-        div.addEventListener('mousedown', ()=>{
-          const short = r.display_name.split(',').slice(0,2).join(',').trim();
-          if(wp){ wp.name=short; wp.coords={lat:r.lat,lon:r.lon}; }
-          // Update all inputs for this wp
+        const div=document.createElement('div');
+        div.className='sugg-item'; div.textContent=r.display_name;
+        div.addEventListener('mousedown',()=>{
+          const short=r.display_name.split(',').slice(0,2).join(',').trim();
+          if(wp){wp.name=short;wp.coords={lat:r.lat,lon:r.lon};}
           ['wp-list','mob-wp-list'].forEach(lid=>{
-            const el = document.getElementById(lid+'I'+wpId);
-            if(el) el.value = short;
-            const s = document.getElementById(lid+'S'+wpId);
-            if(s) s.style.display='none';
+            const el=document.getElementById(lid+'I'+wpId);if(el)el.value=short;
+            const s=document.getElementById(lid+'S'+wpId);if(s)s.style.display='none';
           });
         });
         suggEl.appendChild(div);
       });
-      suggEl.style.display = 'block';
+      suggEl.style.display='block';
     }catch(e){}
-  }, 350);
+  },350);
 }
-
 
 async function resolveWaypoints(){
   for(const wp of waypoints){
-    if(!wp.coords && wp.name.trim().length>=3){
-      const r = await geocode(wp.name);
-      if(r.length) wp.coords={lat:r[0].lat,lon:r[0].lon};
+    if(!wp.coords&&wp.name.trim().length>=3){
+      const r=await geocode(wp.name);
+      if(r.length)wp.coords={lat:r[0].lat,lon:r[0].lon};
     }
   }
   return waypoints.filter(w=>w.coords);
 }
 
 let wpMarkers=[];
-function updateWPMarkers(resolvedWPs){
-  wpMarkers.forEach(m=>map.removeLayer(m));
-  wpMarkers=[];
-  resolvedWPs.forEach((wp,i)=>{
-    const m = L.marker([wp.coords.lat,wp.coords.lon],{
-      icon:L.divIcon({
-        html:'<div style="background:#d4913a;border:2px solid #0e0d0b;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:10px;font-weight:bold;color:#0e0d0b;box-shadow:0 2px 6px rgba(0,0,0,.5)">'+(i+1)+'</div>',
-        className:'',iconSize:[22,22],iconAnchor:[11,11]
-      })
-    }).addTo(map).bindPopup('<b>'+wp.name+'</b>');
+function updateWPMarkers(resolved){
+  wpMarkers.forEach(m=>map.removeLayer(m)); wpMarkers=[];
+  resolved.forEach((wp,i)=>{
+    const m=L.marker([wp.coords.lat,wp.coords.lon],{icon:L.divIcon({
+      html:'<div style="background:#d4913a;border:2px solid #0e0d0b;border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-family:monospace;font-size:10px;font-weight:bold;color:#0e0d0b;box-shadow:0 2px 6px rgba(0,0,0,.5)">'+(i+1)+'</div>',
+      className:'',iconSize:[22,22],iconAnchor:[11,11]
+    })}).addTo(map).bindPopup('<b>'+wp.name+'</b>');
     wpMarkers.push(m);
   });
+}
+
+// &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
+// PRIORITY & ADD-TO-ROUTE
+// &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
+function setPriorityBtn(btn){
+  const id=btn.dataset.pid, pri=btn.dataset.pri;
+  const st=getPOIState(id);
+  setPOIState(id,{priority:st.priority===pri?'none':pri});
+  sortAndRender();
+}
+function toggleFavBtn(btn){ toggleFav(btn.dataset.pid); }
+function toggleVisitedBtn(btn){ toggleVisited(btn.dataset.pid); }
+function openJournalBtn(btn){ openJournal(btn.dataset.pid, btn.dataset.name); }
+function openInMapsBtn(btn){ openInMaps(parseFloat(btn.dataset.lat),parseFloat(btn.dataset.lon),btn.dataset.name); }
+function addToRouteBtn(btn){
+  const p=allPOIs.find(p2=>p2.id===btn.dataset.pid);
+  if(!p)return;
+  setPOIState(p.id,{fav:true});
+  const id='wp'+(++wpCounter);
+  waypoints.push({id,name:p.name,coords:{lat:p.lat,lon:p.lon}});
+  renderWaypoints();
+  if(sCoords&&eCoords)planRoute();
+  toast((lang==='sv'?'Lagt till: ':'Added: ')+p.name);
 }
 
 // TANGENTBORD
