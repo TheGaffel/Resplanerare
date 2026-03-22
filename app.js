@@ -327,7 +327,7 @@ function searchInView(){
 let geoTimers={}, sCoords=null, eCoords=null;
 
 async function geocode(q){
-  const r = await fetch('https://photon.komoot.io/api/?q='+encodeURIComponent(q)+'&limit=5&lang='+(lang==='sv'?'sv':'en'));
+  const r = await fetch('https://photon.komoot.io/api/?q='+encodeURIComponent(q)+'&limit=5');
   const d = await r.json();
   return (d.features||[]).map(f=>({
     lat:f.geometry.coordinates[1], lon:f.geometry.coordinates[0],
