@@ -1370,6 +1370,20 @@ function addToRouteBtn(btn){
   toast((lang==='sv'?'Lagt till: ':'Added: ')+p.name);
 }
 
+
+function setProgress(pct, msg){
+  const bar = document.getElementById('progress-bar');
+  const toast = document.getElementById('status-toast');
+  const txt = document.getElementById('st-txt');
+  if(bar) bar.style.width = pct + '%';
+  if(msg && txt) txt.textContent = msg;
+  if(toast){
+    if(pct > 0 && pct < 100) toast.classList.add('show');
+    else toast.classList.remove('show');
+  }
+  if(pct >= 100) setTimeout(()=>{ if(bar) bar.style.width='0%'; if(toast) toast.classList.remove('show'); }, 800);
+}
+
 // TANGENTBORD
 // &#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;&#9552;
 ['si','ei','mob-si','mob-ei'].forEach(id=>{
